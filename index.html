@@ -5,80 +5,119 @@
     <title>D4 대행 서비스</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style>
-        /* 인벤 게시판에 적용될 수 있도록 최소한의 스타일만 남김 */
+        /* 웹사이트 원본 디자인을 위한 스타일 */
         body {
-            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
-            color: #f3f3f3; /* 텍스트 색상을 원본에 가깝게 유지 */
-            line-height: 1.6; /* 가독성을 위해 기본 줄 간격 유지 */
-            /* background-color는 게시판 자체에 의해 무시될 수 있으므로 제거 */
             margin: 0;
-            padding: 0;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #121922; /* 원본 배경색 */
+            color: #f3f3f3; /* 원본 텍스트 색상 */
+            line-height: 1.7;
+            padding: 40px 16px;
+            padding-bottom: 80px;
         }
 
-        /* 전체 컨테이너는 게시판 너비에 맞춰지고 배경색은 게시판 배경색을 따를 것임 */
-        /* .container 스타일은 인라인 스타일로 각 섹션에 적용하여 박스 효과 시도 */
+        a#full-link {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
 
-        h1 {
-            font-size: 1.9rem; /* 원본 폰트 사이즈 유지 */
+        .container {
+            max-width: 740px;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.45); /* 원본 컨테이너 배경색 */
+            padding: 30px 25px;
+            border-radius: 16px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+            user-select: text;
+        }
+
+        .title {
+            font-size: 1.9rem;
             font-weight: 700;
-            color: #a8d1ff; /* 원본 제목 색상에 가깝게 조정 */
             margin-bottom: 12px;
-            text-align: center; /* 중앙 정렬 */
-            /* text-shadow는 인벤에서 허용하지 않을 가능성 높으므로 제거 */
+            letter-spacing: 0.04em;
+            text-shadow: 0 0 6px #80c7ff;
+            text-align: center;
         }
 
         .subtext {
             font-size: 1.05rem;
             color: #c4d9ff;
-            margin-bottom: 20px;
-            text-align: center; /* 중앙 정렬 */
-        }
-
-        /* .badge-group과 .badge는 디자인 구현이 어렵기 때문에 텍스트로 대체 */
-        .badge-text {
-            font-size: 0.9em;
-            color: #80c7ff; /* 뱃지 색상에 가깝게 조정 */
-            text-align: center;
             margin-bottom: 25px;
-            display: block; /* 한 줄로 표시 */
+            letter-spacing: 0.03em;
+            text-align: center;
         }
 
-        .card-heading {
+        .badge-group {
+            margin-bottom: 28px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #4bb8ff;
+            padding: 5px 14px;
+            margin: 5px 8px 0 0;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #0a1f39;
+            box-shadow: 0 0 8px #4bb8ffaa;
+            user-select: none;
+            letter-spacing: 0.03em;
+        }
+
+        .card {
+            /* 이 스타일은 웹사이트에만 적용. 인벤 복사 시는 인라인 스타일로 대체됨 */
+            background-color: rgba(255, 255, 255, 0.08); 
+            padding: 12px 20px;
+            border-radius: 14px;
+            margin-top: 28px;
+            box-shadow: inset 0 0 12px #63a4ff55;
+            user-select: text;
+        }
+
+        .card h2 {
             font-size: 1.25rem;
-            color: #a8d1ff; /* 카드 제목 색상 유지 */
+            color: #a8d1ff;
             margin-bottom: 8px;
-            /* text-shadow는 인벤에서 허용하지 않을 가능성 높으므로 제거 */
+            text-shadow: 0 0 5px #7bb9ff;
+            letter-spacing: 0.03em;
         }
 
-        ul {
-            padding-left: 20px; /* 목록 들여쓰기 */
+        .card ul {
+            padding-left: 20px; 
             margin: 0;
-            color: #d7eaff; /* 목록 텍스트 색상 유지 */
+            color: #d7eaff;
             font-size: 1rem;
-            list-style-type: disc; /* 점 목록 스타일 */
+            letter-spacing: 0.02em;
+            list-style-position: inside;
         }
 
-        li {
+        .card ul li {
             margin-bottom: 5px;
-            line-height: 1.4; /* 줄 간격 유지 */
+            line-height: 1.4;
         }
 
         .footer {
-            margin-top: 40px;
+            margin-top: 44px;
             font-size: 1rem;
             text-align: center;
-            color: #bcd9ff; /* 푸터 텍스트 색상 유지 */
+            color: #bcd9ffcc;
+            user-select: text;
+            letter-spacing: 0.03em;
+            line-height: 1.5;
         }
 
         .footer strong {
             display: block;
             margin-bottom: 8px;
-            color: #dbf0ff; /* 푸터 강조 텍스트 색상 유지 */
+            color: #dbf0ff;
             font-weight: 700;
-            /* text-shadow는 인벤에서 허용하지 않을 가능성 높으므로 제거 */
+            text-shadow: 0 0 8px #7db8ffaa;
         }
 
-        /* 복사 버튼 관련 스타일은 독립된 HTML 파일에서만 유효 */
         .copy-btn-wrapper {
             position: fixed;
             bottom: 20px;
@@ -102,10 +141,9 @@
             transform: scale(1.05);
         }
 
-        /* 숨겨진 마커 (복사 기능용) */
         .hidden-marker {
             font-size: 1px;
-            color: #121922; /* 배경색과 동일하게 */
+            color: #121922; 
             position: absolute;
             left: -9999px;
             overflow: hidden;
@@ -117,15 +155,25 @@
 </head>
 <body>
     <a href="https://open.kakao.com/me/LunaBliss" target="_blank" id="full-link" aria-label="디아블로4 1대1 상담 오픈채팅 바로가기">
-        <div style="max-width: 740px; margin: 0 auto; padding: 20px;">
-            <h1 style="color: #a8d1ff;">D4 전문 대행 / 버스 / 템판매 / 풀세팅</h1>
-            <p class="subtext">📞 클릭하면 1:1 무료 상담 연결됩니다</p>
+        <div class="container" role="main">
+            <div class="title">D4 전문 대행 / 버스 / 템판매 / 풀세팅</div>
+            <div class="subtext">📞 클릭하면 1:1 무료 상담 연결됩니다</div>
 
-            <p class="badge-text">시즌9 | 배틀넷 | 스팀 | 플스 | 새벽작업 가능</p>
+            <div class="badge-group">
+                <span class="badge">시즌9</span>
+                <span class="badge">배틀넷</span>
+                <span class="badge">스팀</span>
+                <span class="badge">플스</span>
+                <span class="badge">새벽작업 가능</span>
+            </div>
 
-            <section style="background-color: #1a1a1a; padding: 15px 20px; border-radius: 8px; margin-top: 25px; border: 1px solid #4bb8ff;">
-                <h2 class="card-heading">버스 서비스</h2>
-                <ul>
+            <section class="card" aria-labelledby="bus-service-title" 
+                style="background-color: #2a3447; /* 진한 남색 배경 */
+                       padding: 15px 20px; 
+                       margin-top: 28px; 
+                       border: 1px solid #4bb8ff; /* 원본 느낌의 파란 테두리 */
+                       color: #d7eaff; /* 카드 내부 텍스트 색상 */">
+                <h2 id="bus-service-title" style="color: #80c7ff;">버스 서비스</h2> <ul style="padding-left: 20px; list-style-type: disc; color: #d7eaff;">
                     <li>1~60렙 고행4 뚫</li>
                     <li>고행4 벨리알 50판 / 100판</li>
                     <li>군세 판당 버스</li>
@@ -134,9 +182,14 @@
                 </ul>
             </section>
 
-            <section style="background-color: #1a1a1a; padding: 15px 20px; border-radius: 8px; margin-top: 25px; border: 1px solid #4bb8ff;">
-                <h2 class="card-heading">풀세팅 작업</h2>
-                <ul>
+            <section class="card" aria-labelledby="full-setup-title" 
+                style="background-color: #2a3447; 
+                       padding: 15px 20px; 
+                       margin-top: 28px; 
+                       border: 1px solid #4bb8ff;
+                       color: #d7eaff;">
+                <h2 id="full-setup-title" style="color: #80c7ff;">풀세팅 작업</h2>
+                <ul style="padding-left: 20px; list-style-type: disc; color: #d7eaff;">
                     <li>야만 / 원소 / 도적 / 강령 / 혼령 / 드루 빌드 추천</li>
                     <li>1~60렙, 정복자 200렙, 모든 문양 획득</li>
                     <li>사용문양 5종 80렙 업글, 정복자보드, 스킬 구성</li>
@@ -146,9 +199,14 @@
                 </ul>
             </section>
 
-            <section style="background-color: #1a1a1a; padding: 15px 20px; border-radius: 8px; margin-top: 25px; border: 1px solid #4bb8ff;">
-                <h2 class="card-heading">대행 서비스</h2>
-                <ul>
+            <section class="card" aria-labelledby="proxy-service-title" 
+                style="background-color: #2a3447; 
+                       padding: 15px 20px; 
+                       margin-top: 28px; 
+                       border: 1px solid #4bb8ff;
+                       color: #d7eaff;">
+                <h2 id="proxy-service-title" style="color: #80c7ff;">대행 서비스</h2>
+                <ul style="padding-left: 20px; list-style-type: disc; color: #d7eaff;">
                     <li>옵두사이트 10,000개 이상 대행</li>
                     <li>잊혀진 영혼 1,000개 이상 대행</li>
                     <li>시즌 퀘스트, 증오의 그릇 캠페인 대행</li>
@@ -157,9 +215,14 @@
                 </ul>
             </section>
 
-            <section style="background-color: #1a1a1a; padding: 15px 20px; border-radius: 8px; margin-top: 25px; border: 1px solid #4bb8ff;">
-                <h2 class="card-heading">아이템 판매</h2>
-                <ul>
+            <section class="card" aria-labelledby="item-sale-title" 
+                style="background-color: #2a3447; 
+                       padding: 15px 20px; 
+                       margin-top: 28px; 
+                       border: 1px solid #4bb8ff;
+                       color: #d7eaff;">
+                <h2 id="item-sale-title" style="color: #80c7ff;">아이템 판매</h2>
+                <ul style="padding-left: 20px; list-style-type: disc; color: #d7eaff;">
                     <li>고유템, 전설템 모든 거래 가능템 판매</li>
                     <li>고유 1~4어픽, 상옵/맥스 판매</li>
                     <li>전설 1~3어픽 전체옵션 가능</li>
@@ -168,9 +231,9 @@
             </section>
 
             <footer class="footer">
-                <strong>⏰ 24시간 언제든지 문의 환영</strong>
-                💵 인벤 최저가 자부합니다<br/>
-                📞 클릭 시 1:1 상담 연결
+                <strong style="color: #dbf0ff;">⏰ 24시간 언제든지 문의 환영</strong>
+                <span style="color: #bcd9ff;">💵 인벤 최저가 자부합니다<br/></span>
+                <span style="color: #bcd9ff;">📞 클릭 시 1:1 상담 연결</span>
             </footer>
             <div class="hidden-marker">madbychangong_do_not_copy_marker_ID_741852963</div>
         </div>
@@ -184,40 +247,100 @@
         function copyHtmlSource() {
             // 복사할 내용을 원본 HTML에 가깝게 유지하되, 복사 버튼은 제외
             const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = document.body.innerHTML;
+            // 'a#full-link' 요소를 복사하여 그 안의 내용을 가져옵니다.
+            const fullLinkContent = document.querySelector('a#full-link').cloneNode(true);
+            
+            // 인벤 게시판에 최적화된 스타일로 내부를 재구성
+            const targetDiv = fullLinkContent.querySelector('.container');
+            if (targetDiv) {
+                // 원래 div.container의 클래스 및 스타일을 제거하고 인라인 스타일만 남깁니다.
+                targetDiv.removeAttribute('class');
+                targetDiv.removeAttribute('role');
+                targetDiv.removeAttribute('style'); // 기존 컨테이너 스타일 제거
 
+                // 제목 (D4 전문 대행...)
+                const titleElement = targetDiv.querySelector('.title');
+                if (titleElement) {
+                    titleElement.removeAttribute('class');
+                    titleElement.style.cssText = 'font-size: 1.8em; font-weight: bold; color: #0056b3; margin-bottom: 10px; text-align: center;';
+                }
+
+                // 서브텍스트 (클릭하면 1:1 무료 상담...)
+                const subtextElement = targetDiv.querySelector('.subtext');
+                if (subtextElement) {
+                    subtextElement.removeAttribute('class');
+                    subtextElement.style.cssText = 'font-size: 1.1em; color: #007bff; font-weight: bold; margin-bottom: 20px; text-align: center;';
+                }
+
+                // 뱃지 그룹
+                const badgeGroupElement = targetDiv.querySelector('.badge-group');
+                if (badgeGroupElement) {
+                    badgeGroupElement.outerHTML = `<p style="font-size: 0.95em; color: #555555; text-align: center; margin-bottom: 20px;">
+                                                        [시즌9] [배틀넷] [스팀] [플스] [새벽작업 가능]
+                                                    </p>`;
+                }
+
+                // 각 카드 섹션
+                const cardSections = targetDiv.querySelectorAll('section.card');
+                cardSections.forEach(section => {
+                    section.removeAttribute('class');
+                    section.removeAttribute('aria-labelledby');
+                    // 인라인 스타일 유지: background-color, padding, margin, border, color
+                    // (위에서 이미 인라인으로 지정했으므로 그대로 유지)
+                    
+                    const h2Element = section.querySelector('h2');
+                    if (h2Element) {
+                        h2Element.removeAttribute('class');
+                        h2Element.removeAttribute('id');
+                        h2Element.style.cssText = 'font-size: 1.25rem; color: #80c7ff; margin-bottom: 8px;'; // 제목 색상 조정
+                    }
+
+                    const ulElement = section.querySelector('ul');
+                    if (ulElement) {
+                        ulElement.style.cssText = 'padding-left: 20px; margin: 0; color: #d7eaff; font-size: 1rem; list-style-type: disc;';
+                        ulElement.querySelectorAll('li').forEach(li => {
+                            li.style.cssText = 'margin-bottom: 5px; line-height: 1.4;';
+                        });
+                    }
+                });
+
+                // 푸터
+                const footerElement = targetDiv.querySelector('.footer');
+                if (footerElement) {
+                    footerElement.removeAttribute('class');
+                    footerElement.style.cssText = 'margin-top: 40px; font-size: 1em; text-align: center; color: #bcd9ff;';
+                    const strongElement = footerElement.querySelector('strong');
+                    if (strongElement) {
+                        strongElement.style.cssText = 'display: block; margin-bottom: 8px; font-weight: bold; color: #dbf0ff;';
+                    }
+                    // 스팬 태그는 필요 없으므로 제거하고 직접 텍스트 넣기
+                    footerElement.innerHTML = `<strong style="display: block; margin-bottom: 8px; font-weight: bold; color: #dbf0ff;">⏰ 24시간 언제든지 문의 환영</strong>
+                                                <span style="color: #bcd9ff;">💵 인벤 최저가 자부합니다<br/></span>
+                                                <span style="color: #bcd9ff;">📞 클릭 시 1:1 상담 연결</span>`;
+                }
+            }
+            
+            tempDiv.appendChild(fullLinkContent);
+
+            // 복사 버튼 래퍼 제거 (복사될 내용에는 포함되지 않도록)
             const copyBtnWrapper = tempDiv.querySelector('.copy-btn-wrapper');
             if (copyBtnWrapper) {
                 copyBtnWrapper.remove();
             }
 
-            // 스타일 태그 가져오기
-            const styleTag = document.querySelector('style');
-            let styleContent = '';
-            if (styleTag) {
-                styleContent = styleTag.textContent;
+            // 숨겨진 마커 제거
+            const hiddenMarker = tempDiv.querySelector('.hidden-marker');
+            if (hiddenMarker) {
+                hiddenMarker.remove();
             }
 
-            // 복사할 HTML 문자열 생성
-            const htmlToCopy = `<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8" />
-    <title>D4 대행 서비스</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <style>
-        ${styleContent}
-    </style>
-</head>
-<body>
-    ${tempDiv.innerHTML}
-</body>
-</html>`;
+            // 복사할 HTML 문자열 생성 (인라인 스타일만 남도록)
+            const htmlToCopy = tempDiv.innerHTML;
 
             navigator.clipboard.writeText(htmlToCopy)
                 .then(() => {
                     const btn = document.querySelector('.copy-btn');
-                    if (btn) { // 버튼이 존재할 때만 텍스트 변경
+                    if (btn) {
                         btn.textContent = '✅ 복사 완료!';
                         setTimeout(() => { btn.textContent = '📋 홍보물 복사'; }, 2000);
                     }
