@@ -4,8 +4,152 @@
     <meta charset="UTF-8" />
     <title>D4 대행 서비스</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* 외부 폰트 임포트는 제거된 상태로 유지합니다. */
+
+        body {
+            margin: 0;
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; /* 시스템 기본 한글 폰트로 대체 */
+            background-color: #121922; /* 배경색 다시 적용 */
+            color: #f3f3f3; /* 텍스트 색상 다시 적용 */
+            line-height: 1.7 !important; /* 줄 간격을 !important로 강제 적용 */
+            padding: 40px 16px;
+            padding-bottom: 80px; /* 버튼 공간 확보 */
+        }
+
+        a#full-link {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            max-width: 740px;
+            margin: 0 auto;
+            background-color: rgba(0, 0, 0, 0.45); /* 배경색 다시 적용 */
+            padding: 30px 25px;
+            border-radius: 16px;
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7); /* 그림자 다시 적용 */
+            user-select: text;
+        }
+
+        .title {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: 0.04em;
+            text-shadow: 0 0 6px #80c7ff; /* 그림자 다시 적용 */
+        }
+
+        .subtext {
+            font-size: 1.05rem;
+            color: #c4d9ff; /* 색상 다시 적용 */
+            margin-bottom: 25px;
+            letter-spacing: 0.03em;
+        }
+
+        .badge-group {
+            margin-bottom: 28px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #4bb8ff; /* 배경색 다시 적용 */
+            padding: 5px 14px;
+            margin: 5px 8px 0 0;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #0a1f39; /* 색상 다시 적용 */
+            box-shadow: 0 0 8px #4bb8ffaa; /* 그림자 다시 적용 */
+            user-select: none;
+            letter-spacing: 0.03em;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.08); /* 배경색 다시 적용 */
+            padding: 22px 26px;
+            border-radius: 14px;
+            margin-top: 28px;
+            box-shadow: inset 0 0 12px #63a4ff55; /* 그림자 다시 적용 */
+            user-select: text;
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            color: #a8d1ff; /* 색상 다시 적용 */
+            margin-bottom: 14px;
+            text-shadow: 0 0 5px #7bb9ff; /* 그림자 다시 적용 */
+            letter-spacing: 0.03em;
+        }
+
+        .card ul {
+            padding-left: 20px;
+            margin: 0;
+            color: #d7eaff; /* 색상 다시 적용 */
+            font-size: 1rem;
+            letter-spacing: 0.02em;
+        }
+
+        .card ul li {
+            margin-bottom: 9px;
+            position: relative;
+            padding-left: 18px;
+            line-height: 1.5 !important; /* ul li의 줄 간격도 강제 적용 */
+        }
+
+        .card ul li::before {
+            content: "❄️";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1rem;
+            line-height: 1 !important; /* before 요소의 줄 간격도 강제 적용 */
+            color: #a5c9ff; /* 색상 다시 적용 */
+        }
+
+        .footer {
+            margin-top: 44px;
+            font-size: 1rem;
+            text-align: center;
+            color: #bcd9ffcc; /* 색상 다시 적용 */
+            user-select: text;
+            letter-spacing: 0.03em;
+            line-height: 1.5 !important; /* 푸터의 줄 간격도 강제 적용 */
+        }
+
+        .footer strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #dbf0ff; /* 색상 다시 적용 */
+            font-weight: 700;
+            text-shadow: 0 0 8px #7db8ffaa; /* 그림자 다시 적용 */
+        }
+
+        /* 추가: 고정된 홍보물 복사 버튼 */
+        .copy-btn-wrapper {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .copy-btn {
+            background: #4bb8ff; /* 배경색 다시 적용 */
+            color: #0a1f39; /* 색상 다시 적용 */
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 0 15px #4bb8ffaa; /* 그림자 다시 적용 */
+            transition: all 0.3s;
+        }
+        .copy-btn:hover {
+            background: #80c7ff; /* 배경색 다시 적용 */
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
     <a href="https://open.kakao.com/me/LunaBliss" target="_blank" id="full-link" aria-label="디아블로4 1대1 상담 오픈채팅 바로가기">
@@ -78,26 +222,17 @@
     </div>
 
     <script>
-        // HTML을 복사하는 함수. 외부 CSS 파일을 읽어와서 <style> 태그 안에 포함시킵니다.
-        async function copyHtmlSource() {
-            const bodyContent = document.body.cloneNode(true);
+        function copyHtmlSource() {
+            // 버튼을 제외한 HTML 복사
+            const bodyContent = document.body.cloneNode(true); // body의 전체 내용을 복제
             const copyBtnWrapper = bodyContent.querySelector('.copy-btn-wrapper');
             if (copyBtnWrapper) {
-                copyBtnWrapper.remove();
+                copyBtnWrapper.remove(); // 복사할 내용에서 버튼 제거 (재귀 복사를 방지)
             }
 
-            let styleContent = '';
-            try {
-                // style.css 파일의 내용을 직접 가져옵니다.
-                const response = await fetch('style.css');
-                if (response.ok) {
-                    styleContent = await response.text();
-                } else {
-                    console.error('style.css 파일을 불러오는데 실패했습니다.');
-                }
-            } catch (error) {
-                console.error('style.css 파일을 불러오는 중 오류 발생:', error);
-            }
+            // style 태그의 내용을 직접 가져와서 복사될 HTML에 삽입합니다.
+            // 이렇게 하면 외부 CSS 파일 의존성 없이 복사된 내용에 스타일이 포함됩니다.
+            const styleContent = document.querySelector('style').textContent;
 
             const htmlToCopy = `<!DOCTYPE html>
 <html lang="ko">
@@ -106,7 +241,7 @@
     <title>D4 대행 서비스</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style>
-${styleContent}
+        ${styleContent}
     </style>
 </head>
 <body>
