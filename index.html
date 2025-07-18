@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>D4 대행 서비스</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a href="https://open.kakao.com/me/LunaBliss" target="_blank" id="full-link" aria-label="디아블로4 1대1 상담 오픈채팅 바로가기">
+        <div class="container" role="main">
+            <div class="title">D4 전문 대행 / 버스 / 템판매 / 풀세팅</div>
+            <div class="subtext">📞 클릭하면 1:1 무료 상담 연결됩니다</div>
+
+            <div class="badge-group" aria-label="서비스 특장점">
+                <span class="badge">시즌9</span>
+                <span class="badge">배틀넷</span>
+                <span class="badge">스팀</span>
+                <span class="badge">플스</span>
+                <span class="badge">새벽작업 가능</span>
+            </div>
+
+            <section class="card" aria-labelledby="bus-service-title">
+                <h2 id="bus-service-title">버스 서비스</h2>
+                <ul>
+                    <li>1~60렙 고행4 뚫</li>
+                    <li>고행4 벨리알 50판 / 100판</li>
+                    <li>군세 판당 버스</li>
+                    <li>정복자 1~300렙 버스 or 대행</li>
+                    <li>정복자 대행 시 문양 무료 업글</li>
+                </ul>
+            </section>
+
+            <section class="card" aria-labelledby="full-setup-title">
+                <h2 id="full-setup-title">풀세팅 작업</h2>
+                <ul>
+                    <li>야만 / 원소 / 도적 / 강령 / 혼령 / 드루 빌드 추천</li>
+                    <li>1~60렙, 정복자 200렙, 모든 문양 획득</li>
+                    <li>사용문양 5종 80렙 업글, 정복자보드, 스킬 구성</li>
+                    <li>신화우버, 고유템, 전설 1~4어픽 장착</li>
+                    <li>명품화 12강, 룬/보석/시즌파워 완비</li>
+                    <li>용병세팅 (캠페인 미완료도 가능)</li>
+                </ul>
+            </section>
+
+            <section class="card" aria-labelledby="proxy-service-title">
+                <h2 id="proxy-service-title">대행 서비스</h2>
+                <ul>
+                    <li>옵두사이트 10,000개 이상 대행</li>
+                    <li>잊혀진 영혼 1,000개 이상 대행</li>
+                    <li>시즌 퀘스트, 증오의 그릇 캠페인 대행</li>
+                    <li>릴리트 제단 + 명망 (6지역 4단계)</li>
+                    <li>기타 요청은 맞춤 대행 가능</li>
+                </ul>
+            </section>
+
+            <section class="card" aria-labelledby="item-sale-title">
+                <h2 id="item-sale-title">아이템 판매</h2>
+                <ul>
+                    <li>고유템, 전설템 모든 거래 가능템 판매</li>
+                    <li>고유 1~4어픽, 상옵/맥스 판매</li>
+                    <li>전설 1~3어픽 전체옵션 가능</li>
+                    <li>세트템 주문 제작 가능</li>
+                </ul>
+            </section>
+
+            <footer class="footer">
+                <strong>⏰ 24시간 언제든지 문의 환영</strong>
+                💵 인벤 최저가 자부합니다<br/>
+                📞 클릭 시 1:1 상담 연결
+            </footer>
+        </div>
+    </a>
+
+    <div class="copy-btn-wrapper">
+        <button class="copy-btn" onclick="copyHtmlSource()">📋 홍보물 복사</button>
+    </div>
+
+    <script>
+        // HTML을 복사하는 함수. 외부 CSS 파일을 읽어와서 <style> 태그 안에 포함시킵니다.
+        async function copyHtmlSource() {
+            const bodyContent = document.body.cloneNode(true);
+            const copyBtnWrapper = bodyContent.querySelector('.copy-btn-wrapper');
+            if (copyBtnWrapper) {
+                copyBtnWrapper.remove();
+            }
+
+            let styleContent = '';
+            try {
+                // style.css 파일의 내용을 직접 가져옵니다.
+                const response = await fetch('style.css');
+                if (response.ok) {
+                    styleContent = await response.text();
+                } else {
+                    console.error('style.css 파일을 불러오는데 실패했습니다.');
+                }
+            } catch (error) {
+                console.error('style.css 파일을 불러오는 중 오류 발생:', error);
+            }
+
+            const htmlToCopy = `<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>D4 대행 서비스</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <style>
+${styleContent}
+    </style>
+</head>
+<body>
+    ${bodyContent.innerHTML}
+</body>
+</html>`;
+
+            navigator.clipboard.writeText(htmlToCopy)
+                .then(() => {
+                    const btn = document.querySelector('.copy-btn');
+                    btn.textContent = '✅ 복사 완료!';
+                    setTimeout(() => { btn.textContent = '📋 홍보물 복사'; }, 2000);
+                })
+                .catch(err => console.error('복사 실패:', err));
+        }
+    </script>
+</body>
+</html>
