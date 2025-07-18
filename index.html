@@ -1,343 +1,102 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8" />
-    <title>D4 대행 서비스</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <style>
-        /* 웹사이트 원본 디자인을 위한 스타일 (게시판 복사 시에는 일부 제거/변경됨) */
-        body {
-            margin: 0;
-            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
-            background-color: #121922;
-            color: #f3f3f3;
-            line-height: 1.7;
-            padding: 40px 16px;
-            padding-bottom: 80px;
-        }
+<div id="promotionalContent" style="font-family:'Malgun Gothic','Apple SD Gothic Neo',sans-serif; max-width:650px; margin:0 auto; background:#0d0d0d; border-radius:16px; padding:20px 15px 35px; box-shadow:0 0 25px rgba(0,0,0,0.8); color:#e0e0e0; line-height:1.6;">
+  <div style="background:#1a1a1a; border-radius:16px; padding:25px 25px 30px; box-shadow:0 0 15px rgba(0,0,0,0.6);">
+    <div style="font-size:1.9rem; font-weight:700; color:#80c7ff; text-shadow:0 0 8px rgba(128,199,255,0.7); margin-bottom:12px;">D4 전문 대행 / 버스 / 템판매 / 풀세팅</div>
+    <div style="font-size:1.05rem; color:#c4d9ff; text-shadow:0 0 5px rgba(196,217,255,0.5); margin-bottom:24px;">📞 클릭하면 1:1 무료 상담 연결됩니다</div>
 
-        a#full-link {
-            display: block;
-            color: inherit;
-            text-decoration: none;
-        }
-
-        .container {
-            max-width: 740px;
-            margin: 0 auto;
-            background-color: rgba(0, 0, 0, 0.45); /* 웹사이트 원본 배경색 */
-            padding: 30px 25px;
-            border-radius: 16px;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
-            user-select: text;
-        }
-
-        .title {
-            font-size: 1.9rem;
-            font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: 0.04em;
-            text-shadow: 0 0 6px #80c7ff;
-            text-align: center;
-        }
-
-        .subtext {
-            font-size: 1.05rem;
-            color: #c4d9ff;
-            margin-bottom: 25px;
-            letter-spacing: 0.03em;
-            text-align: center;
-        }
-
-        .badge-group {
-            margin-bottom: 28px;
-            text-align: center;
-        }
-
-        .badge {
-            display: inline-block;
-            background: #4bb8ff;
-            padding: 5px 14px;
-            margin: 5px 8px 0 0;
-            border-radius: 14px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #0a1f39;
-            box-shadow: 0 0 8px #4bb8ffaa;
-            user-select: none;
-            letter-spacing: 0.03em;
-        }
-
-        .card {
-            background-color: rgba(255, 255, 255, 0.08); /* 웹사이트 원본 카드 배경색 */
-            padding: 12px 20px;
-            border-radius: 14px;
-            margin-top: 28px;
-            box-shadow: inset 0 0 12px #63a4ff55;
-            user-select: text;
-            color: #d7eaff;
-        }
-
-        .card h2 {
-            font-size: 1.25rem;
-            color: #a8d1ff;
-            margin-bottom: 8px;
-            text-shadow: 0 0 5px #7bb9ff;
-            letter-spacing: 0.03em;
-        }
-
-        .card ul {
-            padding-left: 20px;
-            margin: 0;
-            color: inherit;
-            font-size: 1rem;
-            letter-spacing: 0.02em;
-            list-style-position: inside;
-        }
-
-        .card ul li {
-            margin-bottom: 5px;
-            line-height: 1.4;
-        }
-
-        .footer {
-            margin-top: 44px;
-            font-size: 1rem;
-            text-align: center;
-            color: #bcd9ffcc;
-            user-select: text;
-            letter-spacing: 0.03em;
-            line-height: 1.5;
-        }
-
-        .footer strong {
-            display: block;
-            margin-bottom: 8px;
-            color: #dbf0ff;
-            font-weight: 700;
-            text-shadow: 0 0 8px #7db8ffaa;
-        }
-
-        .copy-btn-wrapper {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-        }
-        .copy-btn {
-            background: #4bb8ff;
-            color: #0a1f39;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 0 15px #4bb8ffaa;
-            transition: all 0.3s;
-        }
-        .copy-btn:hover {
-            background: #80c7ff;
-            transform: scale(1.05);
-        }
-
-        .hidden-marker {
-            font-size: 1px;
-            color: #121922;
-            position: absolute;
-            left: -9999px;
-            overflow: hidden;
-            height: 1px;
-            width: 1px;
-            white-space: nowrap;
-        }
-    </style>
-</head>
-<body>
-    <a href="https://open.kakao.com/me/LunaBliss" target="_blank" id="full-link" aria-label="디아블로4 1대1 상담 오픈채팅 바로가기">
-        <div class="container" role="main">
-            <div class="title">D4 전문 대행 / 버스 / 템판매 / 풀세팅</div>
-            <div class="subtext">📞 클릭하면 1:1 무료 상담 연결됩니다</div>
-
-            <div class="badge-group">
-                <span class="badge">시즌9</span>
-                <span class="badge">배틀넷</span>
-                <span class="badge">스팀</span>
-                <span class="badge">플스</span>
-                <span class="badge">새벽작업 가능</span>
-            </div>
-
-            <section class="card" aria-labelledby="bus-service-title">
-                <h2 id="bus-service-title">버스 서비스</h2>
-                <ul>
-                    <li>1~60렙 고행4 뚫</li>
-                    <li>고행4 벨리알 50판 / 100판</li>
-                    <li>군세 판당 버스</li>
-                    <li>정복자 1~300렙 버스 or 대행</li>
-                    <li>정복자 대행 시 문양 무료 업글</li>
-                </ul>
-            </section>
-
-            <section class="card" aria-labelledby="full-setup-title">
-                <h2 id="full-setup-title">풀세팅 작업</h2>
-                <ul>
-                    <li>야만 / 원소 / 도적 / 강령 / 혼령 / 드루 빌드 추천</li>
-                    <li>1~60렙, 정복자 200렙, 모든 문양 획득</li>
-                    <li>사용문양 5종 80렙 업글, 정복자보드, 스킬 구성</li>
-                    <li>신화우버, 고유템, 전설 1~4어픽 장착, 위상각인</li>
-                    <li>명품화 12강, 룬/보석/시즌파워 완비</li>
-                    <li>용병세팅 (캠페인 완료 되신분만)</li>
-                </ul>
-            </section>
-
-            <section class="card" aria-labelledby="proxy-service-title">
-                <h2 id="proxy-service-title">대행 서비스</h2>
-                <ul>
-                    <li>옵두사이트 10,000개 이상 대행</li>
-                    <li>잊혀진 영혼 1,000개 이상 대행</li>
-                    <li>시즌 퀘스트, 증오의 그릇 캠페인 대행</li>
-                    <li>릴리트 제단 + 명망 (6지역 4단계)</li>
-                    <li>기타 요청은 맞춤 대행 가능</li>
-                </ul>
-            </section>
-
-            <section class="card" aria-labelledby="item-sale-title">
-                <h2 id="item-sale-title">아이템 판매</h2>
-                <ul>
-                    <li>고유템, 전설템 모든 거래 가능템 판매</li>
-                    <li>고유 1~4어픽, 상옵/맥스 판매</li>
-                    <li>전설 1~3어픽 전체옵션 가능</li>
-                    <li>필요한 세트템 주문 가능</li>
-                </ul>
-            </section>
-
-            <footer class="footer">
-                <strong>⏰ 24시간 언제든지 문의 환영</strong>
-                💵 인벤 최저가 자부합니다<br/>
-                📞 클릭 시 1:1 상담 연결
-            </footer>
-            <div class="hidden-marker">madbychangong_do_not_copy_marker_ID_741852963</div>
-        </div>
-    </a>
-
-    <div class="copy-btn-wrapper">
-        <button class="copy-btn" onclick="copyHtmlSource()">📋 홍보물 복사</button>
+    <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:30px;">
+      <span style="background:#4bb8ff; color:#0a1f39; font-weight:600; padding:5px 14px; border-radius:18px; font-size:0.85rem; box-shadow:0 0 8px #4bb8ffaa;">시즌9</span>
+      <span style="background:#4bb8ff; color:#0a1f39; font-weight:600; padding:5px 14px; border-radius:18px; font-size:0.85rem; box-shadow:0 0 8px #4bb8ffaa;">배틀넷</span>
+      <span style="background:#4bb8ff; color:#0a1f39; font-weight:600; padding:5px 14px; border-radius:18px; font-size:0.85rem; box-shadow:0 0 8px #4bb8ffaa;">스팀</span>
+      <span style="background:#4bb8ff; color:#0a1f39; font-weight:600; padding:5px 14px; border-radius:18px; font-size:0.85rem; box-shadow:0 0 8px #4bb8ffaa;">플스</span>
+      <span style="background:#4bb8ff; color:#0a1f39; font-weight:600; padding:5px 14px; border-radius:18px; font-size:0.85rem; box-shadow:0 0 8px #4bb8ffaa;">새벽작업 가능</span>
     </div>
 
-    <script>
-        function copyHtmlSource() {
-            // 원본 'a#full-link' 요소와 그 내용을 복사합니다.
-            const originalFullLink = document.querySelector('a#full-link');
-            const contentToCopy = originalFullLink ? originalFullLink.cloneNode(true) : document.createElement('div');
+    <!-- 카드 영역 시작 -->
+    <div style="background:#2a2a2a; border-radius:14px; padding:18px 20px; box-shadow:inset 0 0 10px rgba(99,164,255,0.4); margin-top:25px;">
+      <div style="font-size:1.3rem; color:#a8d1ff; font-weight:600; margin-bottom:10px;">버스 서비스</div>
+      <ul style="padding-left:20px; margin:0; list-style-type:disc; font-size:0.95rem; color:#d7eaff;">
+        <li>1~60렙 고행4 뚫</li>
+        <li>고행4 벨리알 50판 / 100판</li>
+        <li>군세 판당 버스</li>
+        <li>정복자 1~300렙 버스 or 대행</li>
+        <li>정복자 대행 시 문양 무료 업글</li>
+      </ul>
+    </div>
 
-            // 복사 버튼 래퍼와 숨겨진 마커는 복사된 내용에서 제거합니다.
-            const copyButtonToRemove = contentToCopy.querySelector('.copy-btn-wrapper');
-            if (copyButtonToRemove) {
-                copyButtonToRemove.remove();
-            }
-            const hiddenMarkerToRemove = contentToCopy.querySelector('.hidden-marker');
-            if (hiddenMarkerToRemove) {
-                hiddenMarkerToRemove.remove();
-            }
+    <div style="background:#2a2a2a; border-radius:14px; padding:18px 20px; box-shadow:inset 0 0 10px rgba(99,164,255,0.4); margin-top:25px;">
+      <div style="font-size:1.3rem; color:#a8d1ff; font-weight:600; margin-bottom:10px;">풀세팅 작업</div>
+      <ul style="padding-left:20px; margin:0; list-style-type:disc; font-size:0.95rem; color:#d7eaff;">
+        <li>야만 / 원소 / 도적 / 강령 / 혼령 / 드루 빌드 추천</li>
+        <li>1~60렙, 정복자 200렙, 모든 문양 획득</li>
+        <li>사용문양 5종 80렙 업글, 정복자보드, 스킬 구성</li>
+        <li>신화우버, 고유템, 전설 1~4어픽 장착, 위상각인</li>
+        <li>명품화 12강, 룬/보석/시즌파워 완비</li>
+        <li>용병세팅 (캠페인 완료 되신분만)</li>
+      </ul>
+    </div>
 
-            // 인벤 게시판에 최적화된 스타일을 적용하기 위한 임시 div 생성
-            const tempContainer = contentToCopy.querySelector('.container');
-            if (tempContainer) {
-                // container 클래스와 역할(role) 제거 (인벤에서는 불필요)
-                tempContainer.removeAttribute('class');
-                tempContainer.removeAttribute('role');
-                // container 자체에는 style을 주지 않고, 내부 요소에만 집중
-            }
+    <div style="background:#2a2a2a; border-radius:14px; padding:18px 20px; box-shadow:inset 0 0 10px rgba(99,164,255,0.4); margin-top:25px;">
+      <div style="font-size:1.3rem; color:#a8d1ff; font-weight:600; margin-bottom:10px;">대행 서비스</div>
+      <ul style="padding-left:20px; margin:0; list-style-type:disc; font-size:0.95rem; color:#d7eaff;">
+        <li>옵두사이트 10,000개 이상 대행</li>
+        <li>잊혀진 영혼 1,000개 이상 대행</li>
+        <li>시즌 퀘스트, 증오의 그릇 캠페인 대행</li>
+        <li>릴리트 제단 + 명망 (6지역 4단계)</li>
+        <li>기타 요청은 맞춤 대행 가능</li>
+      </ul>
+    </div>
 
-            // 제목 (D4 전문 대행...)
-            const titleElement = contentToCopy.querySelector('.title');
-            if (titleElement) {
-                titleElement.removeAttribute('class'); // 클래스 제거
-                // 인벤의 흰색 배경 위에서 잘 보이도록 글자색을 명확히 지정
-                titleElement.style.cssText = 'font-size: 1.8em; font-weight: bold; color: #0056b3; margin-bottom: 10px; text-align: center;';
-                // text-shadow는 인벤에서 제거될 가능성이 높으므로 인라인에서 제외
-            }
+    <div style="background:#2a2a2a; border-radius:14px; padding:18px 20px; box-shadow:inset 0 0 10px rgba(99,164,255,0.4); margin-top:25px;">
+      <div style="font-size:1.3rem; color:#a8d1ff; font-weight:600; margin-bottom:10px;">아이템 판매</div>
+      <ul style="padding-left:20px; margin:0; list-style-type:disc; font-size:0.95rem; color:#d7eaff;">
+        <li>고유템, 전설템 모든 거래 가능템 판매</li>
+        <li>고유 1~4어픽, 상옵/맥스 판매</li>
+        <li>전설 1~3어픽 전체옵션 가능</li>
+        <li>필요한 세트템 주문 가능</li>
+      </ul>
+    </div>
 
-            // 서브텍스트 (클릭하면 1:1 무료 상담...)
-            const subtextElement = contentToCopy.querySelector('.subtext');
-            if (subtextElement) {
-                subtextElement.removeAttribute('class');
-                subtextElement.style.cssText = 'font-size: 1.1em; color: #007bff; font-weight: bold; margin-bottom: 20px; text-align: center;';
-            }
+    <!-- 푸터 -->
+    <div style="margin-top:30px; font-size:0.95rem; text-align:center; color:#bcd9ffcc;">
+      <strong style="color:#dbf0ff; display:block; font-weight:700; margin-bottom:6px; text-shadow:0 0 8px rgba(219,240,255,0.7);">⏰ 24시간 언제든지 문의 환영</strong>
+      💵 인벤 최저가 자부합니다<br>
+      <a href="https://open.kakao.com/me/LunaBliss" target="_blank" style="color:#4bb8ff; text-decoration:none;">클릭 시 1:1 상담 연결</a>
+    </div>
+  </div>
+</div>
 
-            // 뱃지 그룹: 텍스트로 대체하고 인라인 스타일 적용
-            const badgeGroupElement = contentToCopy.querySelector('.badge-group');
-            if (badgeGroupElement) {
-                badgeGroupElement.outerHTML = `<p style="font-size: 0.95em; color: #555555; text-align: center; margin-bottom: 20px;">
-                                                    [시즌9] [배틀넷] [스팀] [플스] [새벽작업 가능]
-                                                </p>`;
-            }
+<!-- 홍보물 복사 버튼 -->
+<button id="copyPromoButton" style="
+  position: fixed; /* 여기를 추가했어요! */
+  bottom: 20px;    /* 화면 하단에서 20px 위 */
+  right: 20px;     /* 화면 오른쪽에서 20px 왼쪽 */
+  z-index: 1000;   /* 다른 요소 위에 표시되도록 */
+  padding: 12px 25px;
+  background-color: #4bb8ff;
+  color: #0a1f39;
+  font-size: 1.1rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(75, 184, 255, 0.5);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+">
+  홍보물 복사
+</button>
 
-            // 각 카드 섹션
-            const cardSections = contentToCopy.querySelectorAll('section.card');
-            cardSections.forEach(section => {
-                section.removeAttribute('class'); // 클래스 제거
-                section.removeAttribute('aria-labelledby');
-                // 인라인 스타일로 배경색, 패딩, 마진, 테두리, 텍스트 색상 강제 지정
-                // 기존 rgba(255, 255, 255, 0.08) 대신 #2a3447 (진한 남색)으로 변경하여 가시성 확보
-                section.style.cssText = `background-color: #2a3447; 
-                                         padding: 15px 20px; 
-                                         margin-top: 28px; 
-                                         border: 1px solid #4bb8ff; /* 원본 느낌의 파란 테두리 */
-                                         color: #d7eaff; /* 카드 내부 텍스트 색상 */`;
-                // border-radius, box-shadow 등은 제거
+<!-- 숨겨진 워터마크 -->
+<div style="font-size:1px; color:#0d0d0d; height:1px; overflow:hidden;">madebychangong_dontcopy_tag7425x</div>
 
-                const h2Element = section.querySelector('h2');
-                if (h2Element) {
-                    h2Element.removeAttribute('class');
-                    h2Element.removeAttribute('id');
-                    h2Element.style.cssText = 'font-size: 1.25rem; color: #80c7ff; margin-bottom: 8px;';
-                    // text-shadow 제거
-                }
-
-                const ulElement = section.querySelector('ul');
-                if (ulElement) {
-                    // 글머리 기호가 텍스트와 겹치지 않도록 padding-left 20px을 확실히 지정
-                    ulElement.style.cssText = 'padding-left: 20px; margin: 0; color: #d7eaff; font-size: 1rem; list-style-type: disc;';
-                    ulElement.querySelectorAll('li').forEach(li => {
-                        li.style.cssText = 'margin-bottom: 5px; line-height: 1.4;';
-                        // text-indent, padding-left 제거 (글머리 기호 문제 해결)
-                    });
-                }
-            });
-
-            // 푸터
-            const footerElement = contentToCopy.querySelector('.footer');
-            if (footerElement) {
-                footerElement.removeAttribute('class');
-                footerElement.style.cssText = 'margin-top: 40px; font-size: 1em; text-align: center; color: #bcd9ff;';
-                const strongElement = footerElement.querySelector('strong');
-                if (strongElement) {
-                    strongElement.style.cssText = 'display: block; margin-bottom: 8px; font-weight: bold; color: #dbf0ff;';
-                    // text-shadow 제거
-                }
-                // 인벤에서 스팬 태그가 제거될 수 있으므로, 텍스트를 직접 구성 (HTML 구조 단순화)
-                footerElement.innerHTML = `<strong style="display: block; margin-bottom: 8px; font-weight: bold; color: #dbf0ff;">⏰ 24시간 언제든지 문의 환영</strong>
-                                            <span style="color: #bcd9ff;">💵 인벤 최저가 자부합니다<br/></span>
-                                            <span style="color: #bcd9ff;">📞 클릭 시 1:1 상담 연결</span>`;
-            }
-            
-            // 최종 복사될 HTML
-            const htmlToCopy = contentToCopy.outerHTML;
-
-            navigator.clipboard.writeText(htmlToCopy)
-                .then(() => {
-                    const btn = document.querySelector('.copy-btn');
-                    if (btn) {
-                        btn.textContent = '✅ 복사 완료!';
-                        setTimeout(() => { btn.textContent = '📋 홍보물 복사'; }, 2000);
-                    }
-                })
-                .catch(err => {
-                    console.error('복사 실패:', err);
-                    alert('복사에 실패했습니다. 브라우저 설정을 확인해주세요.');
-                });
-        }
-    </script>
-</body>
-</html>
+<script>
+  document.getElementById('copyPromoButton').addEventListener('click', async () => {
+    const contentToCopy = document.getElementById('promotionalContent').outerHTML;
+    try {
+      await navigator.clipboard.writeText(contentToCopy);
+      alert('홍보물 HTML이 성공적으로 복사되었습니다! 인벤 게시판에 붙여넣기 하세요. 😉');
+    } catch (err) {
+      console.error('클립보드 복사 실패:', err);
+      alert('복사에 실패했습니다. 직접 복사해주세요. ㅠㅠ');
+    }
+  });
+</script>
