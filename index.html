@@ -5,7 +5,8 @@
     이 부분에 대한 사용자님의 명확한 의도를 바탕으로 수정되었습니다.
   -->
   <div style="background:#1a1a1a; border-radius:16px; padding:25px 25px 30px; box-shadow:0 0 15px rgba(0,0,0,0.6);">
-    <div style="font-size:2.025rem; font-weight:700; color:#80c7ff; text-shadow:0 0 8px rgba(128,199,255,0.7); margin-bottom:10px;">D4 전문 대행 / 버스 / 템판매 / 풀세팅</div>
+    <!-- '풀' 글자 자체 겹침 해결 시도: letter-spacing을 0.08rem으로 더 넓게 조정 -->
+    <div style="font-size:2.025rem; font-weight:700; color:#80c7ff; text-shadow:0 0 8px rgba(128,199,255,0.7); margin-bottom:10px; letter-spacing:0.08rem; line-height:1.2;">D4 전문 대행 / 버스 / 템판매 / 풀세팅</div>
     <div style="font-size:1.175rem; color:#c4d9ff; text-shadow:0 0 5px rgba(196,217,255,0.5); margin-bottom:20px;">📞 클릭하면 1:1 무료 상담 연결됩니다</div>
 
     <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:20px;">
@@ -17,7 +18,7 @@
     </div>
 
     <!-- 카드 영역 시작 -->
-    <div style="background:#2a2a2a; border-radius:14px; padding:18px 20px; box-shadow:inset 0 0 10px rgba(99,164,255,0.4);">
+    <div style="background:#2a2a2a; border-radius:14px; padding:10px 20px; box-shadow:inset 0 0 10px rgba(99,164,255,0.4);">
       <div style="font-size:1.425rem; color:#a8d1ff; font-weight:600; margin-bottom:8px;">버스 서비스</div>
       <ul style="padding-left:20px; margin:0; list-style-type:disc; font-size:1.075rem; color:#d7eaff;">
         <li>1~60렙 고행4 뚫</li>
@@ -27,9 +28,9 @@
         <li>정복자 대행 시 문양 무료 업글</li>
       </ul>
     </div>
-    <div style="height: 20px;"></div>
+    <div style="height: 15px;"></div>
 
-    <div style="background:#2a2a2a; border-radius:14px; padding:18px 20px; box-shadow:inset 0 0 10px rgba(99,164,255,0.4);">
+    <div style="background:#2a2a2a; border-radius:14px; padding:10px 20px; box-shadow:inset 0 0 10px rgba(99,164,255,0.4);">
       <div style="font-size:1.425rem; color:#a8d1ff; font-weight:600; margin-bottom:8px;">풀세팅 작업</div>
       <ul style="padding-left:20px; margin:0; list-style-type:disc; font-size:1.075rem; color:#d7eaff;">
         <li>야만 / 원소 / 도적 / 강령 / 혼령 / 드루 빌드 추천</li>
@@ -40,9 +41,9 @@
         <li>용병세팅 (캠페인 완료 되신분만)</li>
       </ul>
     </div>
-    <div style="height: 20px;"></div>
+    <div style="height: 15px;"></div>
 
-    <div style="background:#2a2a2a; border-radius:14px; padding:18px 20px; box-shadow:inset 0 0 10px rgba(99,164,255,0.4);">
+    <div style="background:#2a2a2a; border-radius:14px; padding:10px 20px; box-shadow:inset 0 0 10px rgba(99,164,255,0.4);">
       <div style="font-size:1.425rem; color:#a8d1ff; font-weight:600; margin-bottom:8px;">대행 서비스</div>
       <ul style="padding-left:20px; margin:0; list-style-type:disc; font-size:1.075rem; color:#d7eaff;">
         <li>옵두사이트 10,000개 이상 대행</li>
@@ -52,9 +53,9 @@
         <li>기타 요청은 맞춤 대행 가능</li>
       </ul>
     </div>
-    <div style="height: 20px;"></div>
+    <div style="height: 15px;"></div>
 
-    <div style="background:#2a2a2a; border-radius:14px; padding:18px 20px; box-shadow:inset 0 0 10px rgba(99,164,255,0.4);">
+    <div style="background:#2a2a2a; border-radius:14px; padding:10px 20px; box-shadow:inset 0 0 10px rgba(99,164,255,0.4);">
       <div style="font-size:1.425rem; color:#a8d1ff; font-weight:600; margin-bottom:8px;">아이템 판매</div>
       <ul style="padding-left:20px; margin:0; list-style-type:disc; font-size:1.075rem; color:#d7eaff;">
         <li>고유템, 전설템 모든 거래 가능템 판매</li>
@@ -105,7 +106,7 @@
       alert('홍보물 HTML이 성공적으로 복사되었습니다! 인벤 게시판에 붙여넣기 하세요. 😉');
     } catch (err) {
       console.error('클립보드 복사 실패:', err);
-      alert('복사에 실패했습니다.');
+      alert('복사에 실패했습니다. 직접 복사해주세요. ㅠㅠ');
     }
   });
 
