@@ -5,16 +5,14 @@
     <title>D4 대행 서비스</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style>
-        /* 외부 폰트 임포트는 제거된 상태로 유지합니다. */
-
         body {
             margin: 0;
-            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; /* 시스템 기본 한글 폰트로 대체 */
-            background-color: #121922; /* 배경색 다시 적용 */
-            color: #f3f3f3; /* 텍스트 색상 다시 적용 */
-            line-height: 1.7 !important; /* 줄 간격을 !important로 강제 적용 */
+            font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif;
+            background-color: #121922;
+            color: #f3f3f3;
+            line-height: 1.7; /* !important 제거 */
             padding: 40px 16px;
-            padding-bottom: 80px; /* 버튼 공간 확보 */
+            padding-bottom: 80px;
         }
 
         a#full-link {
@@ -26,10 +24,10 @@
         .container {
             max-width: 740px;
             margin: 0 auto;
-            background-color: rgba(0, 0, 0, 0.45); /* 배경색 다시 적용 */
+            background-color: rgba(0, 0, 0, 0.45);
             padding: 30px 25px;
             border-radius: 16px;
-            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7); /* 그림자 다시 적용 */
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
             user-select: text;
         }
 
@@ -38,12 +36,12 @@
             font-weight: 700;
             margin-bottom: 12px;
             letter-spacing: 0.04em;
-            text-shadow: 0 0 6px #80c7ff; /* 그림자 다시 적용 */
+            text-shadow: 0 0 6px #80c7ff;
         }
 
         .subtext {
             font-size: 1.05rem;
-            color: #c4d9ff; /* 색상 다시 적용 */
+            color: #c4d9ff;
             margin-bottom: 25px;
             letter-spacing: 0.03em;
         }
@@ -54,79 +52,69 @@
 
         .badge {
             display: inline-block;
-            background: #4bb8ff; /* 배경색 다시 적용 */
+            background: #4bb8ff;
             padding: 5px 14px;
             margin: 5px 8px 0 0;
             border-radius: 14px;
             font-size: 0.85rem;
             font-weight: 600;
-            color: #0a1f39; /* 색상 다시 적용 */
-            box-shadow: 0 0 8px #4bb8ffaa; /* 그림자 다시 적용 */
+            color: #0a1f39;
+            box-shadow: 0 0 8px #4bb8ffaa;
             user-select: none;
             letter-spacing: 0.03em;
         }
 
         .card {
-            background-color: rgba(255, 255, 255, 0.08); /* 배경색 다시 적용 */
-            padding: 22px 26px;
+            background-color: rgba(255, 255, 255, 0.08);
+            padding: 12px 20px;
             border-radius: 14px;
             margin-top: 28px;
-            box-shadow: inset 0 0 12px #63a4ff55; /* 그림자 다시 적용 */
+            box-shadow: inset 0 0 12px #63a4ff55;
             user-select: text;
         }
 
         .card h2 {
             font-size: 1.25rem;
-            color: #a8d1ff; /* 색상 다시 적용 */
-            margin-bottom: 14px;
-            text-shadow: 0 0 5px #7bb9ff; /* 그림자 다시 적용 */
+            color: #a8d1ff;
+            margin-bottom: 8px;
+            text-shadow: 0 0 5px #7bb9ff;
             letter-spacing: 0.03em;
         }
 
         .card ul {
-            padding-left: 20px;
+            padding-left: 0;
             margin: 0;
-            color: #d7eaff; /* 색상 다시 적용 */
+            color: #d7eaff;
             font-size: 1rem;
             letter-spacing: 0.02em;
+            list-style-position: inside;
         }
 
         .card ul li {
-            margin-bottom: 9px;
-            position: relative;
-            padding-left: 18px;
-            line-height: 1.5 !important; /* ul li의 줄 간격도 강제 적용 */
-        }
-
-        .card ul li::before {
-            content: "❄️";
-            position: absolute;
-            left: 0;
-            top: 0;
-            font-size: 1rem;
-            line-height: 1 !important; /* before 요소의 줄 간격도 강제 적용 */
-            color: #a5c9ff; /* 색상 다시 적용 */
+            margin-bottom: 5px;
+            line-height: 1.4; /* !important 제거 */
+            text-indent: -1.2em;
+            padding-left: 1.2em;
         }
 
         .footer {
             margin-top: 44px;
             font-size: 1rem;
             text-align: center;
-            color: #bcd9ffcc; /* 색상 다시 적용 */
+            color: #bcd9ffcc;
             user-select: text;
             letter-spacing: 0.03em;
-            line-height: 1.5 !important; /* 푸터의 줄 간격도 강제 적용 */
+            line-height: 1.5; /* !important 제거 */
         }
 
         .footer strong {
             display: block;
             margin-bottom: 8px;
-            color: #dbf0ff; /* 색상 다시 적용 */
+            color: #dbf0ff;
             font-weight: 700;
-            text-shadow: 0 0 8px #7db8ffaa; /* 그림자 다시 적용 */
+            text-shadow: 0 0 8px #7db8ffaa;
         }
 
-        /* 추가: 고정된 홍보물 복사 버튼 */
         .copy-btn-wrapper {
             position: fixed;
             bottom: 20px;
@@ -134,20 +122,31 @@
             z-index: 1000;
         }
         .copy-btn {
-            background: #4bb8ff; /* 배경색 다시 적용 */
-            color: #0a1f39; /* 색상 다시 적용 */
+            background: #4bb8ff;
+            color: #0a1f39;
             border: none;
             padding: 12px 24px;
             border-radius: 50px;
             font-size: 1rem;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 0 15px #4bb8ffaa; /* 그림자 다시 적용 */
+            box-shadow: 0 0 15px #4bb8ffaa;
             transition: all 0.3s;
         }
         .copy-btn:hover {
-            background: #80c7ff; /* 배경색 다시 적용 */
+            background: #80c7ff;
             transform: scale(1.05);
+        }
+
+        .hidden-marker {
+            font-size: 1px;
+            color: #121922;
+            position: absolute;
+            left: -9999px;
+            overflow: hidden;
+            height: 1px;
+            width: 1px;
+            white-space: nowrap;
         }
     </style>
 </head>
@@ -157,7 +156,7 @@
             <div class="title">D4 전문 대행 / 버스 / 템판매 / 풀세팅</div>
             <div class="subtext">📞 클릭하면 1:1 무료 상담 연결됩니다</div>
 
-            <div class="badge-group" aria-label="서비스 특장점">
+            <div class="badge-group">
                 <span class="badge">시즌9</span>
                 <span class="badge">배틀넷</span>
                 <span class="badge">스팀</span>
@@ -182,9 +181,9 @@
                     <li>야만 / 원소 / 도적 / 강령 / 혼령 / 드루 빌드 추천</li>
                     <li>1~60렙, 정복자 200렙, 모든 문양 획득</li>
                     <li>사용문양 5종 80렙 업글, 정복자보드, 스킬 구성</li>
-                    <li>신화우버, 고유템, 전설 1~4어픽 장착</li>
+                    <li>신화우버, 고유템, 전설 1~4어픽 장착, 위상각인</li>
                     <li>명품화 12강, 룬/보석/시즌파워 완비</li>
-                    <li>용병세팅 (캠페인 미완료도 가능)</li>
+                    <li>용병세팅 (캠페인 완료 되신분만)</li>
                 </ul>
             </section>
 
@@ -205,7 +204,7 @@
                     <li>고유템, 전설템 모든 거래 가능템 판매</li>
                     <li>고유 1~4어픽, 상옵/맥스 판매</li>
                     <li>전설 1~3어픽 전체옵션 가능</li>
-                    <li>세트템 주문 제작 가능</li>
+                    <li>필요한 세트템 주문 가능</li>
                 </ul>
             </section>
 
@@ -214,6 +213,7 @@
                 💵 인벤 최저가 자부합니다<br/>
                 📞 클릭 시 1:1 상담 연결
             </footer>
+            <div class="hidden-marker">madbychangong_do_not_copy_marker_ID_741852963</div>
         </div>
     </a>
 
@@ -223,17 +223,24 @@
 
     <script>
         function copyHtmlSource() {
-            // 버튼을 제외한 HTML 복사
-            const bodyContent = document.body.cloneNode(true); // body의 전체 내용을 복제
+            // body 안의 모든 요소를 복사
+            const bodyContent = document.body.cloneNode(true);
+
+            // 복사 버튼 래퍼 제거 (복사될 내용에는 포함되지 않도록)
             const copyBtnWrapper = bodyContent.querySelector('.copy-btn-wrapper');
             if (copyBtnWrapper) {
-                copyBtnWrapper.remove(); // 복사할 내용에서 버튼 제거 (재귀 복사를 방지)
+                copyBtnWrapper.remove();
             }
 
-            // style 태그의 내용을 직접 가져와서 복사될 HTML에 삽입합니다.
-            // 이렇게 하면 외부 CSS 파일 의존성 없이 복사된 내용에 스타일이 포함됩니다.
-            const styleContent = document.querySelector('style').textContent;
+            // 스타일 태그 가져오기
+            const styleTag = document.querySelector('style');
+            let styleContent = '';
+            if (styleTag) {
+                styleContent = styleTag.textContent;
+            }
 
+            // 복사할 HTML 문자열 생성
+            // 내부 스타일을 <head> 안에 직접 포함
             const htmlToCopy = `<!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -249,13 +256,17 @@
 </body>
 </html>`;
 
+            // clipboard API를 사용하여 복사
             navigator.clipboard.writeText(htmlToCopy)
                 .then(() => {
                     const btn = document.querySelector('.copy-btn');
                     btn.textContent = '✅ 복사 완료!';
                     setTimeout(() => { btn.textContent = '📋 홍보물 복사'; }, 2000);
                 })
-                .catch(err => console.error('복사 실패:', err));
+                .catch(err => {
+                    console.error('복사 실패:', err);
+                    alert('복사에 실패했습니다. 브라우저 설정을 확인해주세요.');
+                });
         }
     </script>
 </body>
