@@ -66,22 +66,32 @@
       pointer-events: none;
     }
 
-    /* 캡쳐 전용: 이중테두리 제거 + 단일 링 + 부드러운 섀도 */
+    /* === 캡쳐 전용 스킨 ===
+       - 이중 테두리 유발 요소 제거
+       - 배경을 '완전 불투명'으로 고정해 캡쳐 시 배경 보장 */
     .render-target.capture-polish {
       border: none !important;
       box-shadow:
         0 0 0 1px rgba(255,255,255,0.08),
         0 18px 40px rgba(0,0,0,0.55),
         0 6px 16px rgba(0,0,0,0.35) !important;
-      background:
-        linear-gradient(180deg,
+      background-color: #0f1117 !important;     /* ✅ 불투명 배경 고정 */
+      background-image: linear-gradient(180deg,
           rgba(255,255,255,0.06) 0%,
-          rgba(255,255,255,0.02) 100%
-        ),
-        rgba(10,10,12,0.55);
+          rgba(255,255,255,0.02) 100%);
     }
     .render-target.capture-polish::before {
       display: none !important;
+    }
+    /* 내부 박스/구분선의 보더·인셋섀도 제거 → 안쪽 2중테두리 방지 */
+    .render-target.capture-polish .description {
+      border: none !important;
+      box-shadow: none !important;
+      background: rgba(255,255,255,0.04) !important;
+    }
+    .render-target.capture-polish .divider,
+    .render-target.capture-polish .subtitle-divider {
+      border-top-color: transparent !important;
     }
 
     .shop-title {
@@ -297,20 +307,19 @@
           return;
         }
 
-        // 🎯 캡쳐용 스킨 적용 (이중 테두리 방지 + 예쁜 단일 링)
+        // 🎯 캡쳐용 스킨 적용 (이중 테두리 방지 + 배경 불투명 고정)
         target.classList.add('capture-polish');
 
-        // 스타일이 실제로 적용되도록 한 프레임 대기
+        // 스타일 페인트 완료 이후 캡쳐
         requestAnimationFrame(() => {
           html2canvas(target, {
             useCORS: true,
-            backgroundColor: '#0f1117', // 캔버스 바탕 톤 고정
-            scale: Math.max(2, window.devicePixelRatio) // 선명도 향상
+            backgroundColor: null, // ✅ 엘리먼트의 불투명 배경을 그대로 사용
+            scale: Math.max(2, window.devicePixelRatio)
           }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
             parent.postMessage({ type: 'CAPTURE_DONE', dataUrl: imgData }, '*');
           }).finally(() => {
-            // 화면 원상복구
             target.classList.remove('capture-polish');
           });
         });
