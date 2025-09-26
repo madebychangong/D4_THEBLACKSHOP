@@ -65,6 +65,25 @@
       border-radius: 24px;
       pointer-events: none;
     }
+
+    /* 캡쳐 전용: 이중테두리 제거 + 단일 링 + 부드러운 섀도 */
+    .render-target.capture-polish {
+      border: none !important;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,0.08),
+        0 18px 40px rgba(0,0,0,0.55),
+        0 6px 16px rgba(0,0,0,0.35) !important;
+      background:
+        linear-gradient(180deg,
+          rgba(255,255,255,0.06) 0%,
+          rgba(255,255,255,0.02) 100%
+        ),
+        rgba(10,10,12,0.55);
+    }
+    .render-target.capture-polish::before {
+      display: none !important;
+    }
+
     .shop-title {
       color: #ffe85c;
       font-size: 36px;
@@ -277,13 +296,23 @@
           console.error('.render-target 요소를 찾을 수 없습니다.');
           return;
         }
-        html2canvas(target, {
-          useCORS: true,
-          backgroundColor: '#181818',
-          scale: window.devicePixelRatio
-        }).then((canvas) => {
-          const imgData = canvas.toDataURL('image/png');
-          parent.postMessage({ type: 'CAPTURE_DONE', dataUrl: imgData }, '*');
+
+        // 🎯 캡쳐용 스킨 적용 (이중 테두리 방지 + 예쁜 단일 링)
+        target.classList.add('capture-polish');
+
+        // 스타일이 실제로 적용되도록 한 프레임 대기
+        requestAnimationFrame(() => {
+          html2canvas(target, {
+            useCORS: true,
+            backgroundColor: '#0f1117', // 캔버스 바탕 톤 고정
+            scale: Math.max(2, window.devicePixelRatio) // 선명도 향상
+          }).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            parent.postMessage({ type: 'CAPTURE_DONE', dataUrl: imgData }, '*');
+          }).finally(() => {
+            // 화면 원상복구
+            target.classList.remove('capture-polish');
+          });
         });
       }
     });
