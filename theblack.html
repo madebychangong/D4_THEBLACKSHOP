@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>실시간 가격표 텍스트 입력</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, 'Apple SD Gothic Neo', '맑은 고딕', sans-serif;
+      background-color: #121212;
+      color: #fff;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: #1e1e1e;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255,255,255,0.1);
+    }
+    textarea {
+      width: 100%;
+      height: 240px;
+      padding: 16px;
+      font-size: 18px;
+      background: #2a2a2a;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      resize: vertical;
+      line-height: 1.8;
+      box-sizing: border-box;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #444;
+      color: #fff;
+      border: none;
+      padding: 12px 20px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    button:disabled {
+      background-color: #888;
+      cursor: not-allowed;
+    }
+    #message {
+      margin-top: 20px;
+      color: #00ffd5;
+      font-size: 16px;
+      text-align: center;
+    }
+    #resultBox {
+      display: none;
+      margin-top: 40px;
+      background: #232323;
+      padding: 20px;
+      border-radius: 10px;
+      border: 2px solid #00ffd5;
+      box-shadow: 0 2px 18px #00ffd540;
+    }
+    #resultBox h3 {
+      color: #ffd700;
+      font-size: 18px;
+      margin: 0 0 8px 0;
+      text-align: center;
+    }
+    #resultCode {
+      width: 100%;
+      height: 70px;
+      font-size: 16px;
+      padding: 14px;
+      background: #121212;
+      color: #00ffd5;
+      border: 1px dashed #00ffd5;
+      border-radius: 8px;
+      resize: none;
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      text-align: center;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    #copyBtn {
+      display: block;
+      margin: 0 auto 4px auto;
+      padding: 6px 18px;
+      background: #00ffd5;
+      color: #232323;
+      border: none;
+      border-radius: 7px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #copyBtn:active {
+      background: #00c9aa;
+    }
+    iframe {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      width: 1px;
+      height: 1px;
+      border: none;
+    }
+    #imageHtmlPreviewSection {
+      display: block !important;
+      margin-top: 40px;
+      text-align: center;
+    }
+    #imageHtmlPreviewSection h4 {
+      color: #ffd700;
+      font-size: 17px;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+    #imagePreviewScrollBox {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      background: #222;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 680px;
+      height: 560px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin: 0 auto 8px auto;
+      padding: 10px;
+    }
+    #imagePreview2 {
+      display: block;
+      width: 100%;
+      max-width: 620px;
+      height: auto;
+      border-radius: 10px;
+      background: #222;
+      object-fit: contain;
+    }
+    #copyPreviewHtmlBtn {
+      margin: 15px auto 7px auto;
+      padding: 5px 18px;
+      background: #ffd700;
+      color: #232323;
+      border: none;
+      border-radius: 7px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+      display: inline-block;
+    }
+    #copyPreviewHtmlBtn:active {
+      background: #c0a200;
+    }
+    #previewHtmlCode {
+      width: 100%;
+      max-width: 670px;
+      height: 38px;
+      font-size: 15px;
+      padding: 8px;
+      background: #191919;
+      color: #ffd700;
+      border: 1px dashed #ffd700;
+      border-radius: 7px;
+      resize: none;
+      margin: 0 auto 8px auto;
+      text-align: center;
+      display: block;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  </style>
+  <!-- supabase-js 반드시 먼저! -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>📝 실시간 가격표 텍스트 입력</h2>
+    <form id="theblackForm">
+      <textarea id="mainText" name="mainText" placeholder="여기에 텍스트를 입력하세요"></textarea>
+      <button id="submitBtn" type="submit">✅ 텍스트 적용하기</button>
+    </form>
+    <div id="message"></div>
+    <div id="resultBox">
+      <h3>👇 이 코드를 복사하세요</h3>
+      <textarea id="resultCode" readonly></textarea>
+      <button id="copyBtn">복사하기</button>
+    </div>
+    <iframe id="hiddenFrame" src="" width="1" height="1"></iframe>
+    <div id="imageHtmlPreviewSection">
+      <h4>📋 미리보기 이미지<br>가격 수정 됐는지 확인 필수!!!!</h4>
+      <div id="imagePreviewScrollBox">
+        <img id="imagePreview2" src="" alt="미리보기" />
+      </div>
+      <br />
+      <button id="copyPreviewHtmlBtn">나 "복사" 버튼</button>
+      <textarea id="previewHtmlCode" readonly></textarea>
+    </div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const supabaseUrl = "https://ssnmitgehgzzcpmqwhzt.supabase.co";
+      const supabaseKey =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzbm1pdGdlaGd6emNwbXF3aHp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzNjI1MDgsImV4cCI6MjA2ODkzODUwOH0.u3FrSDh5qYeccQmn0PkOs4nfqIhXLSFHhpWj2JXhTrA";
+      const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+      // 고정된 미리보기 파일명
+      const previewFileName = "b1000.png";
+
+      // 미리보기 이미지 항상 보여주기 (캐시 무효화 쿼리스트링 추가)
+      function setPreviewImage() {
+        const publicUrl = supabase.storage.from("changong-images").getPublicUrl(previewFileName).data.publicUrl;
+        const imagePreview = document.getElementById("imagePreview2");
+        imagePreview.src = publicUrl + "?t=" + Date.now();
+        // 아래 HTML 복사 영역도 항상 최신으로 갱신
+        const resultCodeValue = `<a href="https://open.kakao.com/o/gUVp9cwh" target="_blank" rel="noopener noreferrer">
+  <img src="${publicUrl}" alt="오픈카톡 연결" style="cursor:pointer; max-width:100%; height:auto; border-radius:12px; display:block; margin:0 auto 20px auto" />
+</a>`;
+        document.getElementById("previewHtmlCode").value = resultCodeValue;
+      }
+
+      // 페이지 진입시 항상 미리보기 갱신
+      setPreviewImage();
+
+      // 폼 제출 이벤트 처리
+      document.getElementById("theblackForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const text = document.getElementById("mainText").value.trim();
+        const submitBtn = document.getElementById("submitBtn");
+        const messageDiv = document.getElementById("message");
+        if (!text) {
+          messageDiv.innerText = "텍스트를 입력하세요.";
+          return;
+        }
+        submitBtn.disabled = true;
+        messageDiv.innerText = "저장 중... 잠시만 기다려 주세요.";
+
+        try {
+          // DB에 저장 (user_id: "b1000"으로 고정)
+          const { error } = await supabase
+            .from("user_texts")
+            .upsert({ user_id: "b1000", main_text: text }, { onConflict: "user_id" });
+
+          if (error) throw error;
+
+          messageDiv.innerText = "저장 완료! 이미지 생성 중...";
+
+          // 이미지 렌더링을 위해 theblackempty.html iframe 호출
+          const params = new URLSearchParams({ uid: "b1000" });
+          document.getElementById("hiddenFrame").src = "theblackempty.html?" + params.toString();
+
+          document.getElementById("hiddenFrame").onload = () => {
+            setTimeout(() => {
+              document.getElementById("hiddenFrame").contentWindow.postMessage({ type: "IFRAME_READY" }, "*");
+            }, 1200);
+          };
+        } catch (err) {
+          messageDiv.innerText = "저장 실패: " + (err.message || err.error_description || JSON.stringify(err));
+          submitBtn.disabled = false;
+        }
+      });
+
+      // 이미지 캡처 완료 이벤트 처리
+      window.addEventListener("message", async (event) => {
+        if (event.data && event.data.type === "CAPTURE_DONE") {
+          const dataUrl = event.data.dataUrl;
+          const fileName = previewFileName; // "b1000.png" 고정
+          const fileData = await (await fetch(dataUrl)).blob();
+
+          // 디버깅: Blob 사이즈 로그
+          console.log('업로드 blob 사이즈:', fileData.size);
+
+          // 기존 파일 삭제(충돌 방지, upsert 옵션에도 안전하게)
+          await supabase.storage.from("changong-images").remove([fileName]);
+
+          // 이미지 Supabase 스토리지에 업로드(항상 b1000.png로 upsert)
+          const { error } = await supabase.storage
+            .from("changong-images")
+            .upload(fileName, fileData, {
+              contentType: "image/png",
+              cacheControl: "3600",
+              upsert: true,
+            });
+
+          if (error) {
+            console.error("이미지 업로드 실패:", error);
+            document.getElementById("message").innerText = "이미지 업로드 실패: " + error.message;
+            document.getElementById("submitBtn").disabled = false;
+            return;
+          }
+
+          document.getElementById("message").innerText = "이미지 업로드 완료!";
+          document.getElementById("submitBtn").disabled = false;
+
+          // 업로드 후 미리보기 새로고침 (캐시 무효화)
+          setPreviewImage();
+        }
+      });
+
+      // 복사 버튼 이벤트
+      document.getElementById("copyBtn").addEventListener("click", () => {
+        document.getElementById("resultCode").select();
+        document.execCommand("copy");
+        alert("HTML 코드가 복사되었습니다!");
+      });
+
+      // 미리보기 HTML 복사 버튼 이벤트
+      document.getElementById("copyPreviewHtmlBtn").addEventListener("click", () => {
+        document.getElementById("previewHtmlCode").select();
+        document.execCommand("copy");
+        alert("미리보기 HTML 코드가 복사되었습니다!");
+      });
+    });
+  </script>
+</body>
+</html>
