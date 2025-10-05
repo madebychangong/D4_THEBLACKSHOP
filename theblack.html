@@ -71,20 +71,21 @@
     }
     #resultCode {
       width: 100%;
-      height: 70px;
-      font-size: 16px;
+      height: 120px;
+      font-size: 14px;
       padding: 14px;
       background: #121212;
       color: #00ffd5;
       border: 1px dashed #00ffd5;
       border-radius: 8px;
-      resize: none;
+      resize: vertical;
       display: block;
       margin-top: 10px;
       margin-bottom: 5px;
-      text-align: center;
-      overflow-x: auto;
-      white-space: nowrap;
+      text-align: left;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
     #copyBtn {
       display: block;
@@ -163,19 +164,20 @@
     #previewHtmlCode {
       width: 100%;
       max-width: 670px;
-      height: 38px;
-      font-size: 15px;
+      height: 120px;
+      font-size: 13px;
       padding: 8px;
       background: #191919;
       color: #ffd700;
       border: 1px dashed #ffd700;
       border-radius: 7px;
-      resize: none;
+      resize: vertical;
       margin: 0 auto 8px auto;
-      text-align: center;
+      text-align: left;
       display: block;
-      overflow: hidden;
-      white-space: nowrap;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
   </style>
   <!-- supabase-js 반드시 먼저! -->
@@ -190,7 +192,7 @@
     </form>
     <div id="message"></div>
     <div id="resultBox">
-      <h3>👇 이 코드를 복사하세요</h3>
+      <h3>👇 이 코드를 복사하세요 (보호 기능 포함)</h3>
       <textarea id="resultCode" readonly></textarea>
       <button id="copyBtn">복사하기</button>
     </div>
@@ -215,15 +217,56 @@
       // 고정된 미리보기 파일명
       const previewFileName = "theblack04.png";
 
+      // 보호 기능이 포함된 HTML 코드 생성 함수
+      function generateProtectedHtml(imageUrl) {
+        return `<div class="protected-container" style="position: relative; max-width: 100%; margin: 0 auto 20px auto; display: inline-block; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+    <a href="https://open.kakao.com/o/gUVp9cwh" target="_blank" rel="noopener noreferrer" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;">
+    </a>
+    <img src="${imageUrl}" 
+         alt="오픈카톡 연결" 
+         style="cursor:pointer; max-width:100%; height:auto; border-radius:12px; display:block; margin:0 auto 20px auto; pointer-events: none; -webkit-user-drag: none; user-drag: none;" 
+         draggable="false"
+         oncontextmenu="return false;"
+         ondragstart="return false;"
+         onselectstart="return false;" />
+</div>
+
+<script>
+(function() {
+    var container = document.querySelector('.protected-container');
+    if (container) {
+        container.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('이미지 보호 중입니다.');
+            return false;
+        });
+        container.addEventListener('dragstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+        container.addEventListener('selectstart', function(e) {
+            e.preventDefault();
+            return false;
+        });
+    }
+    document.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
+            return false;
+        }
+    });
+})();
+<\/script>`;
+      }
+
       // 미리보기 이미지 항상 보여주기 (캐시 무효화 쿼리스트링 추가)
       function setPreviewImage() {
         const publicUrl = supabase.storage.from("changong-images").getPublicUrl(previewFileName).data.publicUrl;
         const imagePreview = document.getElementById("imagePreview2");
         imagePreview.src = publicUrl + "?t=" + Date.now();
-        // 아래 HTML 복사 영역도 항상 최신으로 갱신
-        const resultCodeValue = `<a href="https://open.kakao.com/o/gUVp9cwh" target="_blank" rel="noopener noreferrer">
-  <img src="${publicUrl}" alt="오픈카톡 연결" style="cursor:pointer; max-width:100%; height:auto; border-radius:12px; display:block; margin:0 auto 20px auto" />
-</a>`;
+        
+        // 보호 기능이 포함된 HTML 코드 생성
+        const resultCodeValue = generateProtectedHtml(publicUrl);
         document.getElementById("previewHtmlCode").value = resultCodeValue;
       }
 
@@ -302,6 +345,13 @@
 
           // 업로드 후 미리보기 새로고침 (캐시 무효화)
           setPreviewImage();
+          
+          // 결과 박스 표시 및 보호된 HTML 코드 생성
+          const publicUrl = supabase.storage.from("changong-images").getPublicUrl(fileName).data.publicUrl;
+          const protectedHtml = generateProtectedHtml(publicUrl);
+          
+          document.getElementById("resultCode").value = protectedHtml;
+          document.getElementById("resultBox").style.display = "block";
         }
       });
 
@@ -309,14 +359,14 @@
       document.getElementById("copyBtn").addEventListener("click", () => {
         document.getElementById("resultCode").select();
         document.execCommand("copy");
-        alert("HTML 코드가 복사되었습니다!");
+        alert("보호 기능이 포함된 HTML 코드가 복사되었습니다!");
       });
 
       // 미리보기 HTML 복사 버튼 이벤트
       document.getElementById("copyPreviewHtmlBtn").addEventListener("click", () => {
         document.getElementById("previewHtmlCode").select();
         document.execCommand("copy");
-        alert("미리보기 HTML 코드가 복사되었습니다!");
+        alert("보호 기능이 포함된 미리보기 HTML 코드가 복사되었습니다!");
       });
     });
   </script>
