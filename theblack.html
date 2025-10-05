@@ -213,7 +213,7 @@
       const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
       // 고정된 미리보기 파일명
-      const previewFileName = "b1000.png";
+      const previewFileName = "theblack04.png";
 
       // 미리보기 이미지 항상 보여주기 (캐시 무효화 쿼리스트링 추가)
       function setPreviewImage() {
@@ -244,17 +244,17 @@
         messageDiv.innerText = "저장 중... 잠시만 기다려 주세요.";
 
         try {
-          // DB에 저장 (user_id: "b1000"으로 고정)
+          // DB에 저장 (user_id: "theblack04"으로 고정)
           const { error } = await supabase
             .from("user_texts")
-            .upsert({ user_id: "b1000", main_text: text }, { onConflict: "user_id" });
+            .upsert({ user_id: "theblack04", main_text: text }, { onConflict: "user_id" });
 
           if (error) throw error;
 
           messageDiv.innerText = "저장 완료! 이미지 생성 중...";
 
           // 이미지 렌더링을 위해 theblackempty.html iframe 호출
-          const params = new URLSearchParams({ uid: "b1000" });
+          const params = new URLSearchParams({ uid: "theblack04" });
           document.getElementById("hiddenFrame").src = "theblackempty.html?" + params.toString();
 
           document.getElementById("hiddenFrame").onload = () => {
@@ -272,7 +272,7 @@
       window.addEventListener("message", async (event) => {
         if (event.data && event.data.type === "CAPTURE_DONE") {
           const dataUrl = event.data.dataUrl;
-          const fileName = previewFileName; // "b1000.png" 고정
+          const fileName = previewFileName; // "theblack04.png" 고정
           const fileData = await (await fetch(dataUrl)).blob();
 
           // 디버깅: Blob 사이즈 로그
@@ -281,7 +281,7 @@
           // 기존 파일 삭제(충돌 방지, upsert 옵션에도 안전하게)
           await supabase.storage.from("changong-images").remove([fileName]);
 
-          // 이미지 Supabase 스토리지에 업로드(항상 b1000.png로 upsert)
+          // 이미지 Supabase 스토리지에 업로드(항상 theblack04.png로 upsert)
           const { error } = await supabase.storage
             .from("changong-images")
             .upload(fileName, fileData, {
