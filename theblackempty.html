@@ -37,6 +37,7 @@
       width: 600px;
       margin: 40px auto 0 auto;
       background: rgba(0, 0, 0, 0.15);
+      -webkit-backdrop-filter: blur(20px);
       backdrop-filter: blur(20px);
       border-radius: 24px;
       padding: 40px 42px 36px 42px;
@@ -48,14 +49,12 @@
         0 8px 32px rgba(0, 0, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.1),
         inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+      background-clip: padding-box;
     }
     .render-target::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      inset: 0;
       background: linear-gradient(135deg, 
         rgba(255, 255, 255, 0.1) 0%, 
         rgba(255, 255, 255, 0.05) 25%, 
@@ -66,28 +65,26 @@
       pointer-events: none;
     }
 
-    /* === 캡쳐 전용 스킨 === */
-    .render-target.capture-polish {
+    /* === 캡쳐 전용 스킨(캡쳐 직전/직후 잠깐만 적용) === */
+    .render-target.capture-polish{
+      background: #0f1117 !important;          /* 완전 불투명 */
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
       border: none !important;
       box-shadow:
-        0 0 0 1px rgba(255,255,255,0.08),
         0 18px 40px rgba(0,0,0,0.55),
-        0 6px 16px rgba(0,0,0,0.35) !important;
-      background-color: #0f1117 !important;
-      background-image: linear-gradient(180deg,
-          rgba(255,255,255,0.06) 0%,
-          rgba(255,255,255,0.02) 100%);
+        0 6px 16px rgba(0,0,0,0.35) !important; /* inset 제거 */
     }
-    .render-target.capture-polish::before {
-      display: none !important;
-    }
-    .render-target.capture-polish .description {
+    .render-target.capture-polish::before{ display:none !important; }
+    .render-target.capture-polish .description{
+      background: rgba(255,255,255,0.04) !important;
       border: none !important;
       box-shadow: none !important;
-      background: rgba(255,255,255,0.04) !important;
+      -webkit-backdrop-filter: none !important;
+      backdrop-filter: none !important;
     }
     .render-target.capture-polish .divider,
-    .render-target.capture-polish .subtitle-divider {
+    .render-target.capture-polish .subtitle-divider{
       border-top-color: transparent !important;
     }
 
@@ -107,10 +104,8 @@
       position: relative;
       z-index: 1;
     }
-    .shop-title .icon {
-      font-size: 40px;
-      vertical-align: middle;
-    }
+    .shop-title .icon { font-size: 40px; vertical-align: middle; }
+
     .shop-subtitle {
       color: rgba(255, 255, 255, 0.8);
       font-size: 20px;
@@ -125,12 +120,12 @@
     .divider, .subtitle-divider {
       border: none;
       border-top: 1px solid rgba(255, 255, 255, 0.15);
-      margin: 1px 0 1px 0;
+      margin: 1px 0;
       position: relative;
       z-index: 1;
     }
     .info-list {
-      margin: 0 0 0px 0;
+      margin: 0;
       padding: 0;
       list-style: none;
       font-size: 22px;
@@ -150,18 +145,15 @@
       letter-spacing: 0.3px;
       text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     }
-    .info-list li .icon {
-      font-size: 21px;
-      margin-right: 10px;
-      vertical-align: middle;
-    }
+    .info-list li .icon { font-size: 21px; margin-right: 10px; vertical-align: middle; }
+
     .cta-btn {
       margin: 18px auto 22px auto;
       background: linear-gradient(135deg, #1affeb 0%, #0ee5d0 100%);
       color: #0a0a0a;
       font-weight: 900;
       font-size: 23px;
-      padding: 14px 40px 14px 40px;
+      padding: 14px 40px;
       border-radius: 22px;
       border: 1px solid rgba(255, 255, 255, 0.2);
       display: inline-block;
@@ -178,6 +170,7 @@
       position: relative;
       z-index: 1;
     }
+
     .section-price-title {
       font-size: 32px;
       color: #3dffb8;
@@ -193,6 +186,7 @@
       position: relative;
       z-index: 1;
     }
+
     .description {
       font-size: 18px;
       color: rgba(255, 255, 255, 0.85);
@@ -210,13 +204,15 @@
       font-family: 'Pretendard', Arial, sans-serif;
       position: relative;
       z-index: 1;
+      -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      background-clip: padding-box;
     }
 
-    /* === 추가: 상단 경고 리본 === */
+    /* === 상단/중간 경고 리본 === */
     .alert-ribbon {
-      margin: 15px 0 15px 0;
+      margin: 15px 0;
       padding: 10px 14px;
       border-radius: 12px;
       background: #FFB84D;
@@ -226,39 +222,29 @@
       letter-spacing: 0.2px;
       text-align: center;
       box-shadow: none;
-      border: none;
+      border: 0;
       position: relative;
       z-index: 2;
       display: block;
       width: 100%;
       box-sizing: border-box;
+      background-clip: padding-box; /* 헤일로 방지 */
     }
-    /* 가격표 컨테이너 내부의 경고는 description과 분리 */
-    #priceContainer .alert-ribbon {
-      margin: 20px 0 20px 0;
-    }
-    #priceContainer .description {
-      margin-bottom: 0;
-    }
-    #priceContainer .description + .alert-ribbon {
-      margin-top: 20px;
-    }
-    .alert-ribbon .icon {
-      font-size: 18px;
-      margin-right: 8px;
-      vertical-align: -1px;
-    }
-    .render-target.capture-polish .alert-ribbon {
-      background: #FFB84D !important;
-      box-shadow: none !important;
-      border: none !important;
+    #priceContainer .alert-ribbon { margin: 20px 0; }
+    #priceContainer .description { margin-bottom: 0; }
+    #priceContainer .description + .alert-ribbon { margin-top: 20px; }
+    .alert-ribbon .icon { font-size: 18px; margin-right: 8px; vertical-align: -1px; }
+
+    .render-target.capture-polish .alert-ribbon{
+      background: linear-gradient(135deg, #FFD76A 0%, #FFB84D 100%) !important;
+      box-shadow: none !important;  /* 테두리/외곽광 제거 */
+      border: 0 !important;
     }
 
     /* === 가격표 컨테이너 === */
-    #priceContainer {
-      position: relative;
-    }
+    #priceContainer { position: relative; }
   </style>
+
   <!-- 순서 매우 중요!! -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
@@ -286,82 +272,72 @@
       <li><span class="icon">🦸‍♂️</span>경험 많은 전문 기사 상시 대기</li>
       <li><span class="icon">🔥</span>합리적인 실시간 최저가 보장</li>
     </ul>
-    <div class="cta-btn">
-      💬 오픈채팅은 가격표 클릭!
-    </div>
+
+    <div class="cta-btn">💬 오픈채팅은 가격표 클릭!</div>
+
     <div class="alert-ribbon" role="note" aria-label="사칭주의">
       <span class="icon">⚠️</span>
       사칭주의! ➡️ 디아블로4⚫더블랙 시즌10⚫ ⬅️만 공식 단톡방입니다<br>사칭목록 : 방장 '-'
     </div>
-    <hr class="divider" />
-    <div>
-      <h2 class="section-price-title">💰 실시간 가격표</h2>
-    </div>
 
-    <!-- 가격표 영역 (자동으로 경고 삽입됨) -->
+    <hr class="divider" />
+    <div><h2 class="section-price-title">💰 실시간 가격표</h2></div>
+
+    <!-- 가격표 영역 (자동 경고 삽입) -->
     <div id="priceContainer"></div>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      // 파라미터 읽기
       const params = new URLSearchParams(window.location.search);
       const userId = params.get("uid");
       const mainTextParam = params.get("mainText");
       let mainTextLoaded = false;
 
-      // ========================================
-      // ⚙️ 여기서 경고 간격 조절! (px 단위)
-      // ========================================
-      const WARNING_INTERVAL_PX = 2500; // 👈 이 숫자를 바꾸세요! (예: 3000, 4000 등)
-      // ========================================
+      /* 경고 간격(px). 필요시 조절 */
+      const WARNING_INTERVAL_PX = 2500;
 
-      // 가격표에 자동으로 경고 삽입하는 함수
       function renderPriceWithWarnings(text) {
         const container = document.getElementById('priceContainer');
-        container.innerHTML = ''; // 초기화
+        container.innerHTML = '';
 
-        // 먼저 전체 텍스트를 하나의 description으로 만들어서 높이 측정
-        const fullDescDiv = document.createElement('div');
-        fullDescDiv.className = 'description';
-        fullDescDiv.innerText = text;
-        fullDescDiv.style.visibility = 'hidden';
-        fullDescDiv.style.position = 'absolute';
-        document.body.appendChild(fullDescDiv);
+        /* 높이 측정용 가상 박스 */
+        const probe = document.createElement('div');
+        probe.className = 'description';
+        probe.innerText = text;
+        probe.style.visibility = 'hidden';
+        probe.style.position = 'absolute';
+        probe.style.pointerEvents = 'none';
+        document.body.appendChild(probe);
 
-        const totalHeight = fullDescDiv.offsetHeight;
-        document.body.removeChild(fullDescDiv);
+        const totalHeight = probe.offsetHeight;
+        document.body.removeChild(probe);
 
-        // 경고가 필요한 개수 계산
         const warningCount = Math.floor(totalHeight / WARNING_INTERVAL_PX);
 
         if (warningCount === 0) {
-          // 경고 불필요 - 전체 텍스트만 표시
-          const descDiv = document.createElement('div');
-          descDiv.className = 'description';
-          descDiv.innerText = text;
-          container.appendChild(descDiv);
+          const desc = document.createElement('div');
+          desc.className = 'description';
+          desc.innerText = text;
+          container.appendChild(desc);
           return;
         }
 
-        // 텍스트를 여러 부분으로 나누기
         const lines = text.split('\n');
-        const sections = warningCount + 1; // 경고 개수 + 1 = 섹션 개수
+        const sections = warningCount + 1;
         const linesPerSection = Math.ceil(lines.length / sections);
 
         for (let i = 0; i < sections; i++) {
-          const startLine = i * linesPerSection;
-          const endLine = Math.min((i + 1) * linesPerSection, lines.length);
-          const sectionText = lines.slice(startLine, endLine).join('\n');
+          const start = i * linesPerSection;
+          const end = Math.min((i + 1) * linesPerSection, lines.length);
+          const sectionText = lines.slice(start, end).join('\n');
 
           if (sectionText.trim()) {
-            // 텍스트 박스 추가
-            const descDiv = document.createElement('div');
-            descDiv.className = 'description';
-            descDiv.innerText = sectionText;
-            container.appendChild(descDiv);
+            const desc = document.createElement('div');
+            desc.className = 'description';
+            desc.innerText = sectionText;
+            container.appendChild(desc);
 
-            // 마지막 섹션이 아니면 경고 리본 추가
             if (i < sections - 1) {
               const alertDiv = document.createElement('div');
               alertDiv.className = 'alert-ribbon';
@@ -377,13 +353,11 @@
         }
       }
 
-      // mainText 파라미터 있으면 바로 적용
       if (mainTextParam) {
         const decodedText = decodeURIComponent(mainTextParam);
         renderPriceWithWarnings(decodedText);
         mainTextLoaded = true;
       } else if (userId) {
-        // Supabase 초기화
         const supabaseUrl = 'https://ssnmitgehgzzcpmqwhzt.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzbm1pdGdlaGd6emNwbXF3aHp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMzNjI1MDgsImV4cCI6MjA2ODkzODUwOH0.u3FrSDh5qYeccQmn0PkOs4nfqIhXLSFHhpWj2JXhTrA';
         const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
@@ -405,10 +379,9 @@
         mainTextLoaded = true;
       }
 
-      // IFRAME 메시지(캡처 요청) 핸들러
+      /* IFRAME 메시지(캡쳐 요청) */
       window.addEventListener('message', async (event) => {
         if (event.data?.type === 'IFRAME_READY') {
-          // mainText 적용 완료까지 최대 2초 대기
           let waitCount = 0;
           while (!mainTextLoaded && waitCount < 100) {
             await new Promise(res => setTimeout(res, 20));
@@ -423,19 +396,15 @@
 
       function captureAndSend() {
         const target = document.querySelector('.render-target');
-        if (!target) {
-          console.error('.render-target 요소를 찾을 수 없습니다.');
-          return;
-        }
+        if (!target) return;
 
-        // 캡쳐용 스킨 적용
+        /* 캡쳐용 스킨 ON */
         target.classList.add('capture-polish');
 
-        // 스타일 페인트 완료 이후 캡쳐
         requestAnimationFrame(() => {
           html2canvas(target, {
             useCORS: true,
-            backgroundColor: '#0f1117',
+            backgroundColor: null,                 // ← 강제 단색 배경 금지
             scale: Math.max(2, window.devicePixelRatio),
             logging: false,
             removeContainer: true
@@ -443,6 +412,7 @@
             const imgData = canvas.toDataURL('image/png');
             parent.postMessage({ type: 'CAPTURE_DONE', dataUrl: imgData }, '*');
           }).finally(() => {
+            /* 캡쳐용 스킨 OFF */
             target.classList.remove('capture-polish');
           });
         });
