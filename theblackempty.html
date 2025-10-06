@@ -66,16 +66,14 @@
       pointer-events: none;
     }
 
-    /* === 캡쳐 전용 스킨 ===
-       - 이중 테두리 유발 요소 제거
-       - 배경을 '완전 불투명'으로 고정해 캡쳐 시 배경 보장 */
+    /* === 캡쳐 전용 스킨 === */
     .render-target.capture-polish {
       border: none !important;
       box-shadow:
         0 0 0 1px rgba(255,255,255,0.08),
         0 18px 40px rgba(0,0,0,0.55),
         0 6px 16px rgba(0,0,0,0.35) !important;
-      background-color: #0f1117 !important;     /* ✅ 불투명 배경 고정 */
+      background-color: #0f1117 !important;
       background-image: linear-gradient(180deg,
           rgba(255,255,255,0.06) 0%,
           rgba(255,255,255,0.02) 100%);
@@ -83,7 +81,6 @@
     .render-target.capture-polish::before {
       display: none !important;
     }
-    /* 내부 박스/구분선의 보더·인셋섀도 제거 → 안쪽 2중테두리 방지 */
     .render-target.capture-polish .description {
       border: none !important;
       box-shadow: none !important;
@@ -243,6 +240,11 @@
       background: linear-gradient(135deg, #FFC94A 0%, #FFA63B 100%) !important;
       box-shadow: 0 10px 22px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.55) !important;
     }
+
+    /* === 가격표 컨테이너 === */
+    #priceContainer {
+      position: relative;
+    }
   </style>
   <!-- 순서 매우 중요!! -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -251,7 +253,7 @@
 <body>
 
   <div class="render-target" id="capture">
-    <!-- 추가: 경고 리본 -->
+    <!-- 상단 경고 리본 -->
     <div class="alert-ribbon" role="note" aria-label="사칭주의">
       <span class="icon">⚠️</span>
       사칭주의! ➡️ 디아블로4⚫더블랙 시즌10⚫ ⬅️만 공식 단톡방입니다<br>사칭목록 : 방장 '-'
@@ -274,12 +276,17 @@
     <div class="cta-btn">
       💬 오픈채팅은 가격표 클릭!
     </div>
-   <hr class="divider" />
+    <div class="alert-ribbon" role="note" aria-label="사칭주의">
+      <span class="icon">⚠️</span>
+      사칭주의! ➡️ 디아블로4⚫더블랙 시즌10⚫ ⬅️만 공식 단톡방입니다<br>사칭목록 : 방장 '-'
+    </div>
+    <hr class="divider" />
     <div>
       <h2 class="section-price-title">💰 실시간 가격표</h2>
     </div>
 
-    <div class="description" id="mainText"></div>
+    <!-- 가격표 영역 (자동으로 경고 삽입됨) -->
+    <div id="priceContainer"></div>
   </div>
 
   <script>
@@ -290,9 +297,71 @@
       const mainTextParam = params.get("mainText");
       let mainTextLoaded = false;
 
+      // 가격표에 자동으로 경고 삽입하는 함수
+      function renderPriceWithWarnings(text) {
+        const container = document.getElementById('priceContainer');
+        container.innerHTML = ''; // 초기화
+
+        // 임시 div로 텍스트 높이 측정
+        const tempDiv = document.createElement('div');
+        tempDiv.className = 'description';
+        tempDiv.style.visibility = 'hidden';
+        tempDiv.style.position = 'absolute';
+        tempDiv.innerText = text;
+        document.body.appendChild(tempDiv);
+
+        const lines = text.split('\n');
+        let currentText = '';
+        let currentHeight = 0;
+        const maxHeight = 800; // 800px마다 경고 삽입
+
+        lines.forEach((line, index) => {
+          currentText += (index > 0 ? '\n' : '') + line;
+          tempDiv.innerText = currentText;
+          const newHeight = tempDiv.offsetHeight;
+
+          // 800px 초과하면 경고 삽입
+          if (newHeight > maxHeight && currentText.trim()) {
+            // 현재까지의 텍스트를 description으로 추가
+            const descDiv = document.createElement('div');
+            descDiv.className = 'description';
+            descDiv.innerText = currentText.substring(0, currentText.lastIndexOf('\n'));
+            container.appendChild(descDiv);
+
+            // 경고 리본 추가
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert-ribbon';
+            alertDiv.setAttribute('role', 'note');
+            alertDiv.setAttribute('aria-label', '사칭주의');
+            alertDiv.innerHTML = `
+              <span class="icon">⚠️</span>
+              사칭주의! ➡️ 디아블로4⚫더블랙 시즌10⚫ ⬅️만 공식 단톡방입니다<br>사칭목록 : 방장 '-'
+            `;
+            container.appendChild(alertDiv);
+
+            // 현재 라인부터 다시 시작
+            currentText = line;
+            tempDiv.innerText = currentText;
+            currentHeight = tempDiv.offsetHeight;
+          }
+        });
+
+        // 남은 텍스트 추가
+        if (currentText.trim()) {
+          const descDiv = document.createElement('div');
+          descDiv.className = 'description';
+          descDiv.innerText = currentText;
+          container.appendChild(descDiv);
+        }
+
+        // 임시 div 제거
+        document.body.removeChild(tempDiv);
+      }
+
       // mainText 파라미터 있으면 바로 적용
       if (mainTextParam) {
-        document.getElementById('mainText').innerText = decodeURIComponent(mainTextParam);
+        const decodedText = decodeURIComponent(mainTextParam);
+        renderPriceWithWarnings(decodedText);
         mainTextLoaded = true;
       } else if (userId) {
         // Supabase 초기화
@@ -309,7 +378,7 @@
             .limit(1);
 
           if (!error && data.length > 0) {
-            document.getElementById('mainText').innerText = data[0].main_text;
+            renderPriceWithWarnings(data[0].main_text);
           }
           mainTextLoaded = true;
         })();
@@ -340,14 +409,14 @@
           return;
         }
 
-        // 🎯 캡쳐용 스킨 적용 (이중 테두리 방지 + 배경 불투명 고정)
+        // 캡쳐용 스킨 적용
         target.classList.add('capture-polish');
 
         // 스타일 페인트 완료 이후 캡쳐
         requestAnimationFrame(() => {
           html2canvas(target, {
             useCORS: true,
-            backgroundColor: null, // ✅ 엘리먼트의 불투명 배경을 그대로 사용
+            backgroundColor: null,
             scale: Math.max(2, window.devicePixelRatio)
           }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
