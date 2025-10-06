@@ -434,14 +434,25 @@
           html2canvas(target, {
             useCORS: true,
             allowTaint: true,
-            backgroundColor: '#0f1117',
+            backgroundColor: null,
             scale: Math.max(2, window.devicePixelRatio),
             logging: false,
-            removeContainer: true,
-            windowWidth: target.scrollWidth,
-            windowHeight: target.scrollHeight
+            removeContainer: true
           }).then((canvas) => {
-            const imgData = canvas.toDataURL('image/png');
+            // 새 캔버스 생성하고 배경색 먼저 그리기
+            const finalCanvas = document.createElement('canvas');
+            finalCanvas.width = canvas.width;
+            finalCanvas.height = canvas.height;
+            const ctx = finalCanvas.getContext('2d');
+            
+            // 배경색 채우기
+            ctx.fillStyle = '#0f1117';
+            ctx.fillRect(0, 0, finalCanvas.width, finalCanvas.height);
+            
+            // 원본 이미지 위에 그리기
+            ctx.drawImage(canvas, 0, 0);
+            
+            const imgData = finalCanvas.toDataURL('image/png');
             parent.postMessage({ type: 'CAPTURE_DONE', dataUrl: imgData }, '*');
           }).finally(() => {
             target.classList.remove('capture-polish');
