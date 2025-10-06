@@ -216,7 +216,7 @@
 
     /* === 추가: 상단 경고 리본 === */
     .alert-ribbon {
-      margin: -6px 0 10px 0;
+      margin: 15px 0 15px 0;
       padding: 10px 14px;
       border-radius: 12px;
       background: linear-gradient(135deg, #FFD76A 0%, #FFB84D 100%);
@@ -229,6 +229,19 @@
       border: 1px solid rgba(0,0,0,0.15);
       position: relative;
       z-index: 2;
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    /* 가격표 컨테이너 내부의 경고는 description과 분리 */
+    #priceContainer .alert-ribbon {
+      margin: 20px 0 20px 0;
+    }
+    #priceContainer .description {
+      margin-bottom: 0;
+    }
+    #priceContainer .description + .alert-ribbon {
+      margin-top: 20px;
     }
     .alert-ribbon .icon {
       font-size: 18px;
