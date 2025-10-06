@@ -74,6 +74,7 @@
         0 18px 40px rgba(0,0,0,0.55),
         0 6px 16px rgba(0,0,0,0.35) !important;
       background: #0f1117 !important;
+      backdrop-filter: none !important;
     }
     .render-target.capture-polish::before {
       display: none !important;
@@ -432,10 +433,13 @@
         requestAnimationFrame(() => {
           html2canvas(target, {
             useCORS: true,
+            allowTaint: true,
             backgroundColor: '#0f1117',
             scale: Math.max(2, window.devicePixelRatio),
             logging: false,
-            removeContainer: true
+            removeContainer: true,
+            windowWidth: target.scrollWidth,
+            windowHeight: target.scrollHeight
           }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
             parent.postMessage({ type: 'CAPTURE_DONE', dataUrl: imgData }, '*');
