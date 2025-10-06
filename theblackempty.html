@@ -216,6 +216,33 @@
       backdrop-filter: blur(10px);
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
+
+    /* === 추가: 상단 경고 리본 === */
+    .alert-ribbon {
+      margin: -6px 0 10px 0;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #FFD76A 0%, #FFB84D 100%);
+      color: #111;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: 0.2px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.45);
+      border: 1px solid rgba(0,0,0,0.15);
+      position: relative;
+      z-index: 2;
+    }
+    .alert-ribbon .icon {
+      font-size: 18px;
+      margin-right: 8px;
+      vertical-align: -1px;
+    }
+    .render-target.capture-polish .alert-ribbon {
+      border-color: rgba(0,0,0,0.25) !important;
+      background: linear-gradient(135deg, #FFC94A 0%, #FFA63B 100%) !important;
+      box-shadow: 0 10px 22px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.55) !important;
+    }
   </style>
   <!-- 순서 매우 중요!! -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -224,6 +251,12 @@
 <body>
 
   <div class="render-target" id="capture">
+    <!-- 추가: 경고 리본 -->
+    <div class="alert-ribbon" role="note" aria-label="사칭주의">
+      <span class="icon">⚠️</span>
+      사칭주의! ➡️ 디아블로4⚫더블랙 시즌10⚫ ⬅️만 공식 단톡방입니다<br>사칭목록 : 방장 '-'
+    </div>
+
     <div>
       <h1 class="shop-title">
         <span class="icon">🦇</span> THE BLACK SHOP <span class="icon">🧛‍♂️</span>
