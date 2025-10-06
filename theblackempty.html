@@ -308,70 +308,60 @@
         const container = document.getElementById('priceContainer');
         container.innerHTML = ''; // 초기화
 
-        const lines = text.split('\n');
-        let currentText = '';
-        let totalAccumulatedHeight = 0; // 전체 누적 높이
-        let nextWarningAt = WARNING_INTERVAL_PX; // 다음 경고 삽입 위치
+        // 먼저 전체 텍스트를 하나의 description으로 만들어서 높이 측정
+        const fullDescDiv = document.createElement('div');
+        fullDescDiv.className = 'description';
+        fullDescDiv.innerText = text;
+        fullDescDiv.style.visibility = 'hidden';
+        fullDescDiv.style.position = 'absolute';
+        document.body.appendChild(fullDescDiv);
 
-        // 임시 측정용 div
-        const tempDiv = document.createElement('div');
-        tempDiv.className = 'description';
-        tempDiv.style.visibility = 'hidden';
-        tempDiv.style.position = 'absolute';
-        document.body.appendChild(tempDiv);
+        const totalHeight = fullDescDiv.offsetHeight;
+        document.body.removeChild(fullDescDiv);
 
-        lines.forEach((line, index) => {
-          const previousText = currentText;
-          currentText += (index > 0 ? '\n' : '') + line;
-          tempDiv.innerText = currentText;
-          const currentBlockHeight = tempDiv.offsetHeight;
+        // 경고가 필요한 개수 계산
+        const warningCount = Math.floor(totalHeight / WARNING_INTERVAL_PX);
 
-          // 누적 높이가 다음 경고 위치를 넘었는지 확인
-          if (totalAccumulatedHeight + currentBlockHeight >= nextWarningAt && previousText.trim()) {
-            // 이전까지의 텍스트를 description으로 추가
-            const descDiv = document.createElement('div');
-            descDiv.className = 'description';
-            descDiv.innerText = previousText;
-            container.appendChild(descDiv);
-
-            // 높이 측정 후 누적
-            tempDiv.innerText = previousText;
-            totalAccumulatedHeight += tempDiv.offsetHeight;
-
-            // 경고 리본 추가
-            const alertDiv = document.createElement('div');
-            alertDiv.className = 'alert-ribbon';
-            alertDiv.setAttribute('role', 'note');
-            alertDiv.setAttribute('aria-label', '사칭주의');
-            alertDiv.innerHTML = `
-              <span class="icon">⚠️</span>
-              사칭주의! ➡️ 디아블로4⚫더블랙 시즌10⚫ ⬅️만 공식 단톡방입니다<br>사칭목록 : 방장 '-'
-            `;
-            container.appendChild(alertDiv);
-
-            // 경고 리본 높이도 누적
-            document.body.appendChild(alertDiv);
-            totalAccumulatedHeight += alertDiv.offsetHeight;
-            alertDiv.remove();
-
-            // 다음 경고 위치 설정
-            nextWarningAt = totalAccumulatedHeight + WARNING_INTERVAL_PX;
-
-            // 현재 라인부터 다시 시작
-            currentText = line;
-          }
-        });
-
-        // 남은 텍스트 추가
-        if (currentText.trim()) {
+        if (warningCount === 0) {
+          // 경고 불필요 - 전체 텍스트만 표시
           const descDiv = document.createElement('div');
           descDiv.className = 'description';
-          descDiv.innerText = currentText;
+          descDiv.innerText = text;
           container.appendChild(descDiv);
+          return;
         }
 
-        // 임시 div 제거
-        document.body.removeChild(tempDiv);
+        // 텍스트를 여러 부분으로 나누기
+        const lines = text.split('\n');
+        const sections = warningCount + 1; // 경고 개수 + 1 = 섹션 개수
+        const linesPerSection = Math.ceil(lines.length / sections);
+
+        for (let i = 0; i < sections; i++) {
+          const startLine = i * linesPerSection;
+          const endLine = Math.min((i + 1) * linesPerSection, lines.length);
+          const sectionText = lines.slice(startLine, endLine).join('\n');
+
+          if (sectionText.trim()) {
+            // 텍스트 박스 추가
+            const descDiv = document.createElement('div');
+            descDiv.className = 'description';
+            descDiv.innerText = sectionText;
+            container.appendChild(descDiv);
+
+            // 마지막 섹션이 아니면 경고 리본 추가
+            if (i < sections - 1) {
+              const alertDiv = document.createElement('div');
+              alertDiv.className = 'alert-ribbon';
+              alertDiv.setAttribute('role', 'note');
+              alertDiv.setAttribute('aria-label', '사칭주의');
+              alertDiv.innerHTML = `
+                <span class="icon">⚠️</span>
+                사칭주의! ➡️ 디아블로4⚫더블랙 시즌10⚫ ⬅️만 공식 단톡방입니다<br>사칭목록 : 방장 '-'
+              `;
+              container.appendChild(alertDiv);
+            }
+          }
+        }
       }
 
       // mainText 파라미터 있으면 바로 적용
