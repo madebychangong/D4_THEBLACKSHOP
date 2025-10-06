@@ -225,8 +225,8 @@
       font-size: 16px;
       letter-spacing: 0.2px;
       text-align: center;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.45);
-      border: 1px solid rgba(0,0,0,0.15);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      border: none;
       position: relative;
       z-index: 2;
       display: block;
@@ -435,8 +435,10 @@
         requestAnimationFrame(() => {
           html2canvas(target, {
             useCORS: true,
-            backgroundColor: null,
-            scale: Math.max(2, window.devicePixelRatio)
+            backgroundColor: '#0f1117',
+            scale: Math.max(2, window.devicePixelRatio),
+            logging: false,
+            removeContainer: true
           }).then((canvas) => {
             const imgData = canvas.toDataURL('image/png');
             parent.postMessage({ type: 'CAPTURE_DONE', dataUrl: imgData }, '*');
