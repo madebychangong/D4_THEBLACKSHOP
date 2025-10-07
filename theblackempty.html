@@ -212,46 +212,6 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
 
-    /* === 추가: 상단 경고 리본 === */
-    .alert-ribbon {
-      margin: 15px 0 15px 0;
-      padding: 10px 14px;
-      border-radius: 12px;
-      background: #FFB84D;
-      color: #111;
-      font-weight: 800;
-      font-size: 16px;
-      letter-spacing: 0.2px;
-      text-align: center;
-      box-shadow: none;
-      border: none;
-      position: relative;
-      z-index: 2;
-      display: block;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    /* 가격표 컨테이너 내부의 경고는 description과 분리 */
-    #priceContainer .alert-ribbon {
-      margin: 20px 0 20px 0;
-    }
-    #priceContainer .description {
-      margin-bottom: 0;
-    }
-    #priceContainer .description + .alert-ribbon {
-      margin-top: 20px;
-    }
-    .alert-ribbon .icon {
-      font-size: 18px;
-      margin-right: 8px;
-      vertical-align: -1px;
-    }
-    .render-target.capture-polish .alert-ribbon {
-      background: #FFB84D !important;
-      box-shadow: none !important;
-      border: none !important;
-    }
-
     /* === 가격표 컨테이너 === */
     #priceContainer {
       position: relative;
@@ -286,7 +246,7 @@
       <h2 class="section-price-title">💰 실시간 가격표</h2>
     </div>
 
-    <!-- 가격표 영역 (자동으로 경고 삽입됨) -->
+    <!-- 가격표 영역 (경고 배너 제거 버전) -->
     <div id="priceContainer"></div>
   </div>
 
@@ -298,28 +258,20 @@
       const mainTextParam = params.get("mainText");
       let mainTextLoaded = false;
 
-      // ========================================
-      // ⚙️ 여기서 경고 간격 조절! (px 단위)
-      // ========================================
-      const WARNING_INTERVAL_PX = 2500; // 👈 이 숫자를 바꾸세요! (예: 3000, 4000 등)
-      // ========================================
-
-      // 가격표 렌더링 함수 (경고 없이 전체 텍스트만 표시)
-      function renderPriceWithWarnings(text) {
+      // 가격표 렌더(경고/리본 없이 단일 박스)
+      function renderPrice(text) {
         const container = document.getElementById('priceContainer');
-        container.innerHTML = ''; // 초기화
-
-        // 전체 텍스트만 표시
+        container.innerHTML = '';
         const descDiv = document.createElement('div');
         descDiv.className = 'description';
-        descDiv.innerText = text;
+        descDiv.innerText = text || '';
         container.appendChild(descDiv);
       }
 
       // mainText 파라미터 있으면 바로 적용
       if (mainTextParam) {
         const decodedText = decodeURIComponent(mainTextParam);
-        renderPriceWithWarnings(decodedText);
+        renderPrice(decodedText);
         mainTextLoaded = true;
       } else if (userId) {
         // Supabase 초기화
@@ -335,12 +287,15 @@
             .order('created_at', { ascending: false })
             .limit(1);
 
-          if (!error && data.length > 0) {
-            renderPriceWithWarnings(data[0].main_text);
+          if (!error && data && data.length > 0) {
+            renderPrice(data[0].main_text);
+          } else {
+            renderPrice('');
           }
           mainTextLoaded = true;
         })();
       } else {
+        renderPrice('');
         mainTextLoaded = true;
       }
 
