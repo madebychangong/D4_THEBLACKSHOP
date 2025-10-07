@@ -264,11 +264,11 @@
 <body>
 
   <div class="render-target" id="capture">
-    <!-- 상단 경고 리본 -->
+    <!-- 상단 경고 리본 
     <div class="alert-ribbon" role="note" aria-label="사칭주의">
-      <span class="icon">⚠️</span>
-      사칭주의! ➡️ 디아블로4⚫더블랙 시즌10⚫ ⬅️만 공식 단톡방입니다<br>사칭목록 : 방장 '-'
-    </div>
+      <span class="icon">🚨</span>
+      ↖️  사칭주의! 검은 모서리 각짐 = 사칭, 둥글면 = 공식  ↗️
+    </div>-->
 
     <div>
       <h1 class="shop-title">
@@ -287,10 +287,10 @@
     <div class="cta-btn">
       💬 오픈채팅은 가격표 클릭!
     </div>
-    <div class="alert-ribbon" role="note" aria-label="사칭주의">
-      <span class="icon">⚠️</span>
-      사칭주의! ➡️ 디아블로4⚫더블랙 시즌10⚫ ⬅️만 공식 단톡방입니다<br>사칭목록 : 방장 '-'
-    </div>
+    <!--<div class="alert-ribbon" role="note" aria-label="사칭주의">
+      <span class="icon">🚨</span>
+      저희는 가격으로 승부합니다. <br>사칭방이 더 싸다면 그곳에서 구매하셔도 좋습니다.
+    </div>-->
     <hr class="divider" />
     <div>
       <h2 class="section-price-title">💰 실시간 가격표</h2>
@@ -311,7 +311,7 @@
       // ========================================
       // ⚙️ 여기서 경고 간격 조절! (px 단위)
       // ========================================
-      const WARNING_INTERVAL_PX = 2500; // 👈 이 숫자를 바꾸세요! (예: 3000, 4000 등)
+      const WARNING_INTERVAL_PX = 3000; // 👈 이 숫자를 바꾸세요! (예: 3000, 4000 등)
       // ========================================
 
       // 가격표에 자동으로 경고 삽입하는 함수
@@ -366,8 +366,8 @@
               alertDiv.setAttribute('role', 'note');
               alertDiv.setAttribute('aria-label', '사칭주의');
               alertDiv.innerHTML = `
-                <span class="icon">⚠️</span>
-                사칭주의! ➡️ 디아블로4⚫더블랙 시즌10⚫ ⬅️만 공식 단톡방입니다<br>사칭목록 : 방장 '-'
+                <span class="icon"></span>
+
               `;
               container.appendChild(alertDiv);
             }
