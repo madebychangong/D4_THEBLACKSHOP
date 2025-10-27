@@ -258,14 +258,13 @@
       const mainTextParam = params.get("mainText");
       let mainTextLoaded = false;
 
-            const chatUrl = params.get('chat') || 'https://open.kakao.com/o/somechat';
-      // === 자동 구분선 감지 + 동일 링크 3회 삽입 ===
-      function insertChatLinks(text, chatUrl) {
-        const tagLine = `
-#디아블로4 THEBLACK 오픈채팅링크확인 → ${chatUrl}
-`;
+      // 🔹 (추가) 단일 링크 파라미터: 없으면 기본값 사용
+      const chatUrl = params.get("chat") || "https://open.kakao.com/o/somechat";
 
-        // 1) 구분선 자동 감지 (---, ***, ===, ___, ~~~, etc.)
+      // 🔹 (추가) 구분선 자동감지 + 동일 링크 3곳 삽입
+      function insertChatLinks(text, chatUrl) {
+        const tagLine = `\n#디아블로4 THEBLACK 오픈채팅링크확인 → ${chatUrl}\n`;
+        // 구분선 후보: --- *** === ___ ~~~ 등 반복문자 3개 이상
         const dividerRegex = /([\-*=~_]{3,})/g;
         const matches = [...text.matchAll(dividerRegex)].map(m => m[1]);
         let divider = "-----------------------------------------";
@@ -274,12 +273,9 @@
           for (const m of matches) freq[m] = (freq[m] || 0) + 1;
           divider = Object.entries(freq).sort((a,b)=>b[1]-a[1])[0][0];
         }
-
-        // 2) 기준선으로 분할
-        const esc = divider.replace(/[.*+?^${}()|[\]\]/g,'\$&');
-        const parts = text.split(new RegExp(esc, 'g'));
-
-        // 3) 삽입 위치 계산 (가능하면 정확히 3곳)
+        const esc = divider.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+        const parts = text.split(new RegExp(esc,'g'));
+        // 4등분 지점(¼, ½, ¾)에 최대 3회 삽입
         let positions = [];
         if (parts.length >= 4) {
           positions = [
@@ -287,40 +283,30 @@
             Math.floor(parts.length / 2),
             Math.floor(3 * parts.length / 4)
           ];
-          // 유효 인덱스만 남기고, 중복 제거
           const seen = new Set();
-          positions = positions.filter(i => i > 0 && i < parts.length && !seen.has(i) && seen.add(i) === undefined);
+          positions = positions.filter(i => i > 0 && i < parts.length && !seen.has(i) && (seen.add(i), true));
         } else {
-          // 구분선이 많지 않을 때: 가능한 선에서 최대 3회까지만
           const step = Math.max(1, Math.floor(parts.length / 3));
           for (let i = step; i < parts.length && positions.length < 3; i += step) {
             if (i > 0 && i < parts.length) positions.push(i);
           }
         }
-
-        // 4) 계산된 위치에 삽입
-        positions.sort((a,b) => a - b);
+        positions.sort((a,b)=>a-b);
         for (let k = positions.length - 1; k >= 0; k--) {
           const idx = positions[k];
-          parts[idx] = parts[idx].trim() + "
-" + divider + "
-" + tagLine;
+          parts[idx] = parts[idx].trim() + "\n" + divider + "\n" + tagLine;
         }
-
-        // 5) 재결합
-        return parts.join("
-" + divider + "
-");
+        return parts.join("\n" + divider + "\n");
       }
 
-
-// 가격표 렌더(경고/리본 없이 단일 박스)
+      // 가격표 렌더(경고/리본 없이 단일 박스)
       function renderPrice(text) {
         const container = document.getElementById('priceContainer');
         container.innerHTML = '';
         const descDiv = document.createElement('div');
         descDiv.className = 'description';
-        descDiv.innerText = insertChatLinks(text || '';, chatUrl)
+        // (변경) 텍스트에 링크 3곳 자동 삽입
+        descDiv.innerText = insertChatLinks(text || '', chatUrl);
         container.appendChild(descDiv);
       }
 
