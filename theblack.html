@@ -268,11 +268,8 @@
 
           messageDiv.innerText = "저장 완료! 이미지 생성 중...";
 
-          // 이미지 렌더링을 위해 템플릿 iframe 호출 (파일명은 theblackempty.html 그대로)
-          const params = new URLSearchParams({ 
-            uid: "theblack04",
-            chat: "https://open.kakao.com/o/gUVp9cwh"  // 🔸 단일 링크를 3곳에 반복 삽입
-          });
+          // 이미지 렌더링을 위해 theblackempty.html iframe 호출
+          const params = new URLSearchParams({ uid: "theblack04" });
           document.getElementById("hiddenFrame").src = "theblackempty.html?" + params.toString();
 
           document.getElementById("hiddenFrame").onload = () => {
