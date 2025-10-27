@@ -260,10 +260,94 @@
 
       // 🔹 (추가) 단일 링크 파라미터: 없으면 기본값 사용
       const chatUrl = params.get("chat") || "https://open.kakao.com/o/somechat";
+      // === THE BLACK 태그 스타일 설정 (색상/자간/줄간격 변경은 여기서) ===
+      const TB_TAG = {
+        colorMode: 'random', // 'random' | 'fixed'
+        fixedColor: '#00FFD5',
+        palette: ['#00FFD5', '#FFD166', '#FF6B6B', '#7C5CFF', '#7CF17F', '#56C0FF', '#FF9F43', '#F72585', '#4CC9F0', '#B9FBC0'],
+        letterSpacing: '0.0px',   // 자간
+        lineHeight: '1.35',       // 줄간격
+        fontWeight: 800
+      };
 
-// === 구분선 자동 감지(유니코드 대시 포함) + 구분선 없을 때도 안전 삽입 ===
+
+
+// === 구분선 대체 삽입 + 색상/자간 커스터마이즈 + 안전 HTML ===
 function insertChatLinks(text, chatUrl) {
-  const tagLine = `\n#디아블로4 THEBLACK 오픈채팅링크확인 → ${chatUrl}\n`;
+  const escapeHTML = (s) => s.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  const pickColor = (i) => TB_TAG.colorMode === 'fixed' ? TB_TAG.fixedColor : TB_TAG.palette[i % TB_TAG.palette.length];
+
+  // 1) 실제 구분선 토큰화 (---, ***, ===, ___, ───, ━━━, ———, －－－, ＿＿＿, ㅡㅡㅡ 등)
+  const dividerClass = "[\-\*=~_─━—–－＿ㅡ]";
+  const splitRe = new RegExp(`(${dividerClass}{3,})`, 'g');
+  const tokens = text.split(splitRe); // [seg0, div1, seg1, div2, seg2, ...]
+  const dividerIdxs = [];
+  for (let i = 1; i < tokens.length; i += 2) dividerIdxs.push(i);
+
+  // 2) 교체할 구분선 3곳 선택 (1/4, 1/2, 3/4 지점 근처)
+  let chosen = [];
+  if (dividerIdxs.length > 0) {
+    const candidates = [
+      Math.floor(dividerIdxs.length / 4),
+      Math.floor(dividerIdxs.length / 2),
+      Math.floor(3 * dividerIdxs.length / 4)
+    ];
+    const seen = new Set();
+    chosen = candidates
+      .map(ix => dividerIdxs[Math.max(0, Math.min(dividerIdxs.length - 1, ix))])
+      .filter(i => Number.isInteger(i) && !seen.has(i) && (seen.add(i), true));
+  }
+
+  // 3) 구분선이 0~2개뿐이면: 가능한 만큼만 대체하고, 부족분은 덩어리 사이에 추가
+  let extraNeeded = Math.max(0, 3 - chosen.length);
+
+  // 4) 태그 HTML 생성기 (색상/자간/줄간격 반영)
+  let tagCount = 0;
+  const makeTag = () => {
+    const color = pickColor(tagCount++);
+    const leftText = '#디아블로4 THEBLACK 오픈채팅링크확인 → ';
+    return `<div class="tb-tagline" style="
+      margin:6px 0;
+      font-weight:${TB_TAG.fontWeight};
+      letter-spacing:${TB_TAG.letterSpacing};
+      line-height:${TB_TAG.lineHeight};
+      color:${color};
+      text-shadow:0 0 6px rgba(0,0,0,.35);
+    ">${escapeHTML(leftText)}<span style="color:${color}; text-decoration:underline;">${escapeHTML(chatUrl)}</span></div>`;
+  };
+
+  // 5) HTML로 재조립
+  let html = '';
+  for (let i = 0; i < tokens.length; i++) {
+    const isDivider = (i % 2 === 1);
+    if (!isDivider) {
+      html += escapeHTML(tokens[i]); // 본문은 전부 escape
+      continue;
+    }
+    if (chosen.includes(i)) {
+      // 선택된 구분선은 태그로 대체
+      html += `
+${makeTag()}
+`;
+    } else {
+      // 그 외 구분선은 보기 좋게 유지
+      html += `
+${escapeHTML(tokens[i])}
+`;
+    }
+  }
+
+  // 6) 구분선 자체가 거의 없을 때 부족분 추가
+  while (extraNeeded-- > 0) {
+    html += `
+-----------------------------------------
+${makeTag()}
+`;
+  }
+
+  return html;
+}
+\n`;
 
   // 1) 어떤 '대시류' 구분선이 와도 자르는 범용 패턴 (3개 이상 연속)
   //    포함 문자: -, *, =, ~, _, ─, ━, —, – , －(전각), ＿(전각), ㅡ(한글 기호)
@@ -332,7 +416,7 @@ function insertChatLinks(text, chatUrl) {
         const descDiv = document.createElement('div');
         descDiv.className = 'description';
         // (변경) 텍스트에 링크 3곳 자동 삽입
-        descDiv.innerText = insertChatLinks(text || '', chatUrl);
+        descDiv.innerHTML = insertChatLinks(text || '', chatUrl);
         container.appendChild(descDiv);
       }
 
